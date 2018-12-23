@@ -1,0 +1,1 @@
+<div id="copyright text-right">© Copyright 2018 Parroquia La Transfiguración</div>
