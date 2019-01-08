@@ -22,9 +22,11 @@ class CreateMatrimoniosTable extends Migration
             //fks
             $table->unsignedInteger('esposo_id');
             $table->unsignedInteger('esposa_id');
+            $table->unsignedInteger('padre_id');
 
             $table->foreign('esposo_id')->references('id')->on('personas');
             $table->foreign('esposa_id')->references('id')->on('personas');
+            $table->foreign('padre_id')->references('id')->on('padres');
         });
     }
 

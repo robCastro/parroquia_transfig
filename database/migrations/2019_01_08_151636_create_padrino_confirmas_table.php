@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateConfirmaPadrinosTable extends Migration
+class CreatePadrinoConfirmasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateConfirmaPadrinosTable extends Migration
      */
     public function up()
     {
-        Schema::create('confirma_padrinos', function (Blueprint $table) {
+        Schema::create('padrino_confirmas', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre');
             $table->string('apellido');
@@ -33,6 +33,6 @@ class CreateConfirmaPadrinosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('confirma_padrinos');
+        Schema::dropIfExists('padrino_confirmas');
     }
 }

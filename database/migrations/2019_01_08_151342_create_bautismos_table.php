@@ -21,8 +21,10 @@ class CreateBautismosTable extends Migration
 
             //fks
             $table->unsignedInteger('persona_id');
+            $table->unsignedInteger('padre_id');
             
             $table->foreign('persona_id')->references('id')->on('personas');
+            $table->foreign('padre_id')->references('id')->on('padres');
         });
     }
 
