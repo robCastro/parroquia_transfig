@@ -17,10 +17,18 @@ class CreatePersonasTable extends Migration
             $table->increments('id');
             $table->string('nombre');
             $table->string('apellido');
-            $table->date('fechaNac');
+            $table->date('fechanac');
             $table->boolean('sexo');
             $table->string('papa');
             $table->string('mama');
+
+            //Fks
+            $table->unsignedInteger('id_nacionalidad');
+            $table->unsignedInteger('id_municipio')->nullable();
+
+            $table->foreign('id_nacionalidad')->references('id')->on('nacionalidades');
+            $table->foreign('id_municipio')->references('id')->on('municipios');
+
         });
     }
 
