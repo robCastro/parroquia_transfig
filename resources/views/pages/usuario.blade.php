@@ -58,11 +58,12 @@
     
 
         <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                         <h4 class="modal-title custom_align" id="Heading">Editar Usuario</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
@@ -76,7 +77,7 @@
                         </div>
                     </div>
                     <div class="modal-footer ">
-                        <button type="button" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span>Actualizar</button>
+                        <button type="button" class="btn btn-primary btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span>Actualizar</button>
                     </div>
                 </div>
                 <!-- /.modal-content -->
@@ -84,12 +85,13 @@
             
                     <!-- /.modal-dialog --> 
                 </div>
-                <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-                    <div class="modal-dialog">
+                <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="delete" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                 <h4 class="modal-title custom_align" id="Heading">Eliminar</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                
                             </div>
                             <div class="modal-body">
                                 <div class="alert alert-danger">
