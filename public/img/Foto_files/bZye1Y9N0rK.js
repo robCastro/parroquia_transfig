@@ -1,0 +1,3 @@
+if (self.CavalryLogger) { CavalryLogger.start_js(["hao52"]); }
+
+__d("MFullPageLoadState",["NavigationMetrics","Stratcom"],(function(a,b,c,d,e,f,g,h){"use strict";__p&&__p();var i="pre-tti",j=g.addRetroactiveListener(g.Events.EVENT_OCCURRED,a);h.listen("m:page:loading",null,function(){i==="pre-tti"?i="interrupted-pre-tti":i==="post-tti"?i="interrupted-post-tti":i==="post-dd"&&(i="interrupted-post-dd"),j&&j.remove(),j=null,h.removeCurrentListener()});function a(a,b){if(a!==g.getFullPageLoadLid())return;b.event==="tti"&&i==="pre-tti"?i="post-tti":b.event==="all_pagelets_displayed"&&(i==="pre-tti"||i==="post-tti")?i="post-dd":b.event==="e2e"&&i!=="post-e2e"&&(i="post-e2e",j&&j.remove(),j=null)}function b(){return i}e.exports={get:b}}),null);

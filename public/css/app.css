@@ -44,6 +44,14 @@ border-color: #d9534f !important;
 box-shadow:none !important;
 }
 
+.menu{
+  background-color: #3c8dbc;  
+}
+
+.menu a {
+  color: white;
+}
+
 @import url(https://fonts.googleapis.com/css?family=Nunito);/*!
  * Bootstrap v4.1.3 (https://getbootstrap.com/)
  * Copyright 2011-2018 The Bootstrap Authors

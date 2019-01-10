@@ -19,10 +19,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('create', 'DisplayDataController@create');
-Route::get('index', 'DisplayDataController@index');
+Route::get('create', 'UsuariosController@create');
+Route::get('index', 'UsuariosController@index');
 
 // Display view
-Route::get('datatable', 'DisplayDataController@datatable');
+Route::get('usuarios', 'UsuariosController@index');
 // Get Data
-Route::get('datatable/getdata', 'DisplayDataController@getPosts')->name('datatable/getdata');
+Route::get('datatable/getdata', 'UsuariosController@getPosts')->name('datatable/getdata');
