@@ -1,3 +1,0 @@
-if (self.CavalryLogger) { CavalryLogger.start_js(["TL0y0"]); }
-
-__d("MUFIConversationGuideHScroll.react",["React","cx"],(function(a,b,c,d,e,f,g,h){"use strict";var i;i=babelHelpers.inherits(a,g.Component);i&&i.prototype;a.prototype.render=function(){return g.createElement("div",{className:"_7an1"},g.createElement("div",{className:"_7ans"},this.props.children))};function a(){i.apply(this,arguments)}e.exports=a}),null);
