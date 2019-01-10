@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Departamento extends Model
 {
     public $timestamps = false;
-}
 
-public function municipios(){
-	return $this->hasMany('App\Municipio');
+    public function municipios(){
+        return $this->hasMany('App\Municipio');
+    }
+
 }
