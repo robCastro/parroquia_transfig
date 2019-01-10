@@ -1,0 +1,3 @@
+if (self.CavalryLogger) { CavalryLogger.start_js(["hQ8LD"]); }
+
+__d("ConversationGuideUIEvent",[],(function(a,b,c,d,e,f){e.exports=Object.freeze({SUGGESTION_VPV:"conversation_guide_suggestion_vpv",SUGGESTION_SELECTED:"conversation_guide_suggestion_selected",SOFT_DISMISS:"conversation_guide_soft_dismiss",HARD_DISMISS:"conversation_guide_hard_dismiss",SUGGESTIONS_REQUESTED:"conversation_guide_suggestions_requested",SUGGESTIONS_RETURNED:"conversation_guide_suggestions_returned"})}),null);
