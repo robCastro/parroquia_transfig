@@ -27,7 +27,7 @@
                     <label for="username" class="col-md-4 col-form-label text-md-right">Usuario:</label>
 
                     <div class="col-md-6">
-                        <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" required>
+                        <input id="username" type="username" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" required>
 
                         @if ($errors->has('username'))
                             <span class="invalid-feedback" role="alert">
@@ -78,9 +78,7 @@
                         <button type="submit" class="btn btn-primary btn-lg">
                             Guardar
                         </button>
-                        <button type="" class="btn btn-danger btn-lg">
-                            Cancelar
-                        </button>
+                        
                     </div>
                 </div>
             </form>
