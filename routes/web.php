@@ -17,12 +17,26 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('create', 'UsuariosController@create');
 Route::get('index', 'UsuariosController@index');
 
-// Display view
-Route::get('usuarios', 'UsuariosController@index');
 // Get Data
 Route::get('datatable/getdata', 'UsuariosController@getPosts')->name('datatable/getdata');
+
+
+Route::prefix('admin')->group(function()
+{
+	//Marisol
+	Route::get('asistentes', 'UsuariosController@index')->name('asistentes');
+	Route::get('asistente/crear', 'UsuariosController@create')->name('asistentes_crear');
+	//Route::post('edificios_eliminar', 'EdificiosController@eliminar')->name('edificios_eliminar');
+	//Route::post('edificios_editar', 'EdificiosController@editar')->name('edificios_editar');
+
+	/*Route::get('confirmacion', 'UsuariosController@index')->name('aspirantes');
+	Route::post('edificios_guardar', 'EdificiosController@guardar')->name('edificios_guardar');
+	Route::post('edificios_eliminar', 'EdificiosController@eliminar')->name('edificios_eliminar');
+	Route::post('edificios_editar', 'EdificiosController@editar')->name('edificios_editar');*/
+
+});

@@ -6,6 +6,10 @@
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Asistentes</h1>
         </div>
+        <div style="padding-bottom: 1rem; align-content: left;">
+            <button type="submit" class="btn btn-primary" id="btnCrearAula" onClick="location.href='asistente/crear'">Nuevo</button>
+        </div>
+
         <div class="table-responsive">
             @if ($users->isEmpty())
                 <div>No hay Usuarios</div>
@@ -15,6 +19,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
+                        <th>Usuario</th>
                         <th>Email</th>
                         <th>Editar</th>
                         <th>Eliminar</th>
@@ -25,6 +30,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
+                        <th>Usuario</th>
                         <th>Email</th>
                         <th>Editar</th>
                         <th>Eliminar</th>
@@ -36,6 +42,7 @@
                     <tr>
                         <td>{!!$user->id!!}</td>
                         <td>{!!$user->name!!}</td>
+                        <td>{{$user->username}}</td>
                         <td>{!!$user->email!!}</td>
                         <td>
                             <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" >

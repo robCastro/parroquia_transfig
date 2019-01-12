@@ -16,8 +16,8 @@ class UsuariosController extends Controller
     	return view('pages.usuario')->with('users', $users);
     }
 
-    public function getPosts()
+    public function create()
     {
-        return \DataTables::of(User::query())->make(true);
+        return view('pages.usuario-crear');
     }
 }
