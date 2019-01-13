@@ -22,6 +22,12 @@ Auth::routes();
 Route::get('create', 'UsuariosController@create');
 Route::get('index', 'UsuariosController@index');
 
+
+//Roberto
+Route::get('lista_personas', 'PersonasController@listar')->name('lista_personas');
+Route::get('crear_persona', 'PersonasController@create')->name('crear_persona');
+Route::get('filtrar_municipios', 'PersonasController@filtrarMunicipios')->name('filtrar_municipios');
+
 // Get Data
 Route::get('datatable/getdata', 'UsuariosController@getPosts')->name('datatable/getdata');
 
