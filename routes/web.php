@@ -26,3 +26,9 @@ Route::get('index', 'UsuariosController@index');
 Route::get('usuarios', 'UsuariosController@index');
 // Get Data
 Route::get('datatable/getdata', 'UsuariosController@getPosts')->name('datatable/getdata');
+
+//Patricia
+Route::get('padres', 'PadresController@index')->name('padres');
+Route::post('padres_crear', 'PadresController@crear')->name('padres_crear');
+Route::post('padres_editar', 'PadresController@editar')->name('padres_editar');
+Route::post('padres_eliminar', 'PadresController@eliminar')->name('padres_eliminar');
