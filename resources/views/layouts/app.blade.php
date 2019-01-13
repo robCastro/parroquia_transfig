@@ -100,6 +100,10 @@
           $('#datatable').dataTable();
           $("[data-toggle=tooltip]").tooltip();
       } );
+
+      $("#success-alert").fadeTo(6000, 500).slideUp(500, function(){
+          $(".alert-dismissible").alert('close');
+      });
   </script>
   </body>
 </html>
