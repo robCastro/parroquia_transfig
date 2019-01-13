@@ -19,7 +19,7 @@ Auth::routes();
 
 //Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('create', 'UsuariosController@create');
+
 Route::get('index', 'UsuariosController@index');
 
 // Get Data
@@ -29,8 +29,8 @@ Route::get('datatable/getdata', 'UsuariosController@getPosts')->name('datatable/
 Route::prefix('admin')->group(function()
 {
 	//Marisol
-	Route::get('asistentes', 'UsuariosController@index')->name('asistentes');
-	Route::get('asistente/crear', 'UsuariosController@create')->name('asistentes_crear');
+	Route::get('asistentes', 'UsuariosController@index')->name('asistentes')->middleware('auth');
+	Route::post('asistente_crear', 'UsuariosController@create')->name('asistente_crear')->middleware('auth');
 	//Route::post('edificios_eliminar', 'EdificiosController@eliminar')->name('edificios_eliminar');
 	//Route::post('edificios_editar', 'EdificiosController@editar')->name('edificios_editar');
 
