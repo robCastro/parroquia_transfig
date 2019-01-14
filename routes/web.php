@@ -35,6 +35,8 @@ Route::get('filtrar_municipios', 'PersonasController@filtrarMunicipios')->name('
 Route::get('consultar_sacramentos', 'PersonasController@consultarSacramentos')->name('consultar_sacramentos');
 Route::post('eliminar_persona', 'PersonasController@eliminar')->name('eliminar_persona');
 Route::get('detalle_persona/{id}', 'PersonasController@detalle')->where('id', '[0-9]+')->name('detalle_persona');
+Route::get('editar_persona/{id}', 'PersonasController@edit')->where('id', '[0-9]+')->name('editar_persona');
+Route::post('guardar_editar_persona', 'PersonasController@guardarEdit')->name('guardar_editar_persona');
 
 // Get Data
 Route::get('datatable/getdata', 'UsuariosController@getPosts')->name('datatable/getdata');

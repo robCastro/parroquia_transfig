@@ -36,7 +36,6 @@ class PersonasController extends Controller
         return view('pages.crear_persona', compact("paises", "departamentos", "municipios"));
     }
 
-
     public function consultarSacramentos(Request $request){
     	if($request->has('codPersona') && $request->codPersona != ""){
     		try{
@@ -170,13 +169,11 @@ class PersonasController extends Controller
     }
 
     public function detalle(Request $request, $id){
-        Log::debug($id);
         if($id != ""){
             try{
                 $persona = Persona::findOrFail((int)$id);
             }
             catch(ModelNotFoundException $e){
-                Log::debug("En Catch");
                 return redirect('lista_personas');
             }
             $salvadorenio = True;
@@ -190,6 +187,119 @@ class PersonasController extends Controller
             }
             $matrimonio = Matrimonio::where('esposo_id', $persona->id)->orWhere('esposa_id', $persona->id)->first();
             return view('pages.detalle_persona', compact("persona", "salvadorenio", "matrimonio"));
+        }
+        else{
+            return redirect('lista_personas');
+        }
+    }
+
+    public function edit(Request $request, $id){
+        if($id != ""){
+            try{
+                $persona = Persona::findOrFail((int)$id);
+            }
+            catch(ModelNotFoundException $e){
+                return redirect('lista_personas');
+            }
+            $salvadorenio = True;
+            try{
+                Log::debug($persona->municipio->departamento->nombre);
+                //probando acceso para verificar y no ser llamado en vista
+            }
+            catch(\ErrorException $e){
+                //Pleca invertida para que no busque clase en mi namespace
+                $salvadorenio = False;
+            }
+            $paises = Nacionalidad::all();
+            $departamentos = Departamento::all();
+            if($salvadorenio){
+                $municipios = Departamento::find($persona->municipio->departamento->id)->municipios()->get();
+            }
+            else{
+                $municipios = Departamento::find(6)->municipios()->get();
+            }
+            
+            return view('pages.editar_persona', compact("persona", "salvadorenio", "paises", "departamentos", "municipios"));
+        }
+        else{
+            return redirect('lista_personas');
+        }
+    }
+
+    public function guardarEdit(Request $request){
+        Log::debug("Prueba de guardado de edicion");
+        if ($request->isMethod('POST') && $request->has('id') && $request->id != ""){
+            try{
+                $persona = Persona::findOrFail((int)$request->id);
+            }
+            catch(ModelNotFoundException $e){
+                return redirect('lista_personas');
+            }
+            Log::debug($persona);
+            $mensaje = "Errores encontrados:";
+            $nombreValido = False;
+            $apellidoValido = False;
+            $fechaValida = False;
+            $papaValido = False;
+            $mamaValida = False;
+            $sexoValido = False;
+            $paisValido = False;
+            $muniValido = False;
+            if($request->has('nombre') && $request->nombre!="")
+                $nombreValido = True;
+            else
+                $mensaje = $mensaje . " Nombre no especificado.";
+            if($request->has('apellido') && $request->apellido!="")
+                $apellidoValido = True;
+            else
+                $mensaje = $mensaje . " Apellido no especificado.";
+            if($request->has('fechaNac') && $request->fechaNac!="")
+                $fechaValida = True;
+            else
+                $mensaje = $mensaje . " Fecha de nacimiento no especificada.";
+            if($request->has('papa') && $request->papa!="")
+                $papaValido = True;
+            else
+                $mensaje = $mensaje . " Nombre de Papá no especificado.";
+            if($request->has('mama') && $request->mama!="")
+                $mamaValida = True;
+            else
+                $mensaje = $mensaje . " Nombre de Mamá no especificado.";
+            if($request->has('sexo'))
+                $sexoValido = True;
+            else
+                $mensaje = $mensaje . " Sexo no especificado.";
+            if($request->has('pais') && $request->pais!="")
+                $paisValido = True;
+            else
+                $mensaje = $mensaje . " Pais no especificado.";
+            if($request->has('municipio') && $request->municipio!="")
+                $muniValido = True;
+            else
+                $mensaje = $mensaje . " Municipio no especificado.";
+
+            if ($nombreValido && $apellidoValido && $fechaValida && $papaValido && $mamaValida && $sexoValido && $paisValido && $muniValido){
+                $persona->nombre = $request->nombre;
+                $persona->apellido = $request->apellido;
+                $persona->fechanac = $request->fechaNac;
+                $persona->papa = $request->papa;
+                $persona->mama = $request->mama;
+                $persona->sexo = $request->sexo == "true";
+                //AJAX envia los booleans como texto
+                $persona->id_nacionalidad = $request->pais;
+                if($request->pais == 54){
+                    $persona->id_municipio = $request->municipio;
+                }
+                else{
+                    $persona->id_municipio = NULL;
+                }
+                $persona->save();
+                Log::debug($persona);
+                return response($content = 'Registro guardado correctamente.', $status = 200);
+            }
+            else{
+                return response($content = $mensaje, $status = 500);
+            }
         }
         else{
             return redirect('lista_personas');

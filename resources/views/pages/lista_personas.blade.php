@@ -60,7 +60,7 @@
                         <td class="celdaClic" >{!!$persona->nombre!!}</td>
                         <td class="celdaClic" >{{$persona->fechanac}}</td>
                         <td>
-                            <button class="btn btn-info btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" >
+                            <button class="btn btn-info btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" onclick="window.location = '{{ url('editar_persona', $persona->id) }}'" >
                                 <i class="fas fa-edit" ></i>
                             </button>
                             <button class="btn btn-danger btn-xs btnEliminar" type="button" id="delete-{{ $persona->id }}">

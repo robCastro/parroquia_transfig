@@ -12,7 +12,7 @@
                 <tr>
                     <td><h1 class="h2">{{ $persona->nombre }} {{ $persona->apellido }}</h1></td>
                     <td>
-                        <button class="btn btn-info btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" >
+                        <button class="btn btn-info btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" onclick="window.location = '{{ url('editar_persona', $persona->id) }}'" >
                             <i class="fas fa-edit" ></i>
                         </button>
                         <button class="btn btn-danger btn-xs btnEliminar" data-toggle="modal" data-target="#modalDelete" type="button" id="delete-{{ $persona->id }}">
