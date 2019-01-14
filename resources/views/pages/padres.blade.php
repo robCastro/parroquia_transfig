@@ -3,24 +3,26 @@
 @section('content')
 
 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Padres</h1>
-            <button class="btn btn-primary" data-title="Nuevo" data-toggle="modal" data-target="#create" >
-            Nuevo
-            </button>
-            <br><br>
         </div>
-        <div class="alert alert-success alert-dismissible" id="alerta-success" hidden="">
+        <div class="alert alert-success" id="alerta-success">
 	        <button type="button" class="close" aria-hidden="true">&times;</button>
 	        <h4><i class="icon fa fa-check"></i> Exito</h4>
-	        <h5 id="mensaje_alerta">Alerta</h5>
+	        <h5 id="mensaje_alerta"></h5>
         </div>
-
-        <div class="alert alert-warning alert-dismissible" id="alerta-error" hidden="">
+        <div class="alert alert-warning" id="alerta-error">
             <button type="button" class="close" aria-hidden="true">&times;</button>
-            <h4><i class="icon fa fa-warning"></i> Error</h4>
+            <h4><i class="icon fa fa-times"></i> Error</h4>
             <h5 id="mensaje_alerta2"></h5>
         </div>
+        <div style="padding-bottom: 1rem; align-content: left;">
+        <button class="btn btn-primary" data-title="Nuevo" data-toggle="modal" data-target="#create" >
+            Nuevo
+            </button>
+        </div>
+        
         <div class="table-responsive">
         
             @if ($padres->isEmpty())
@@ -82,33 +84,41 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label for="txtNombre" class="col-sm-2 control-label"><strong>Nombre:</strong></label>
-                            <div class="col-sm-8">
-                                <input type="text" id="txtNombre" name="txtNombre" class="form-control">
+                        <div class="form-group row">
+                            <label for="txtNombre" class="col-md-4 col-form-label text-md-right"><strong>Nombre:</strong></label>
+                            <div class="col-sm-6">
+                                <input type="text" id="txtNombre" name="txtNombre" class="form-control" onkeyup="validarCrear()">
+                                <div class="invalid-feedback">Nombre no válido</div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="txtApellido" class="col-sm-2 control-label"><strong>Apellido:</strong></label>
-                            <div class="col-sm-8">
-                                <input type="text" id="txtApellido" name="txtApellido" class="form-control">
+                        <div class="form-group row">
+                            <label for="txtApellido" class="col-md-4 col-form-label text-md-right"><strong>Apellido:</strong></label>
+                            <div class="col-sm-6">
+                                <input type="text" id="txtApellido" name="txtApellido" class="form-control" onkeyup="validarCrear()">
+                                <div class="invalid-feedback">Apellido no válido</div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="txtTipo" class="col-sm-2 control-label"><strong>Tipo:</strong></label>
-                            <div class="col-sm-8">
-                                <input type="radio" id="padreN" name="esObispoN" class="form-control" value="padre" checked>Padre
-                                <input type="radio" id="obispoN" name="esObispoN" class="form-control" value="obispo">Obispo
+                        <div class="input-group">
+                            <label for="esObispoN" class="col-md-4 text-md-right"><strong>Tipo:</strong></label>
+                            <div class="col-sm-3">
+                                <input type="radio" id="padreN" name="esObispoN" class="radiobox" value="padre" checked> Padre
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="radio" id="obispoN" name="esObispoN" class="radiobox" value="obispo"> Obispo<br><br>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="col-sm-8">
-                                <input type="checkbox" id="padreActualN" name="padreActualN" class="form-control" value="true">Padre Actual
+                        <div class="input-group">
+                            <div class="col-sm-4">
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="checkbox" id="padreActualN" name="padreActualN" class="checkbox" value="true"> Padre Actual<br><br>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer ">
-                        <button type="submit" id="btnGuardar" class="btn btn-primary btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span>Guardar</button>
+                        <div class="form-group row mb-0">
+                                <div class="col-md-6 offset-md-4">
+                                <button type="submit" id="btnGuardar" class="btn btn-primary btn-lg" >Guardar</button>
+                                </div>
+                            </div>
                     </div>
                 </div>
             </div>
@@ -126,34 +136,42 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label for="txtNombre" class="col-sm-2 control-label"><strong>Nombre:</strong></label>
-                            <div class="col-sm-8">
+                        <div class="form-group row">
+                            <label for="txtNombre" class="col-md-4 col-form-label text-md-right"><strong>Nombre:</strong></label>
+                            <div class="col-sm-6">
                                 <input type="text" name="txtEditarCodigo" id="txtEditarCodigo" hidden>
-                                <input type="text" id="txtEditarNombre" name="txtEditarNombre" class="form-control">
+                                <input type="text" id="txtEditarNombre" name="txtEditarNombre" class="form-control" onkeyup="validarEditar()">
+                                <div class="invalid-feedback">Nombre no válido</div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="txtApellido" class="col-sm-2 control-label"><strong>Apellido:</strong></label>
-                            <div class="col-sm-8">
-                                <input type="text" id="txtEditarApellido" name="txtEditarApellido" class="form-control">
+                        <div class="form-group row">
+                            <label for="txtApellido" class="col-md-4 col-form-label text-md-right"><strong>Apellido:</strong></label>
+                            <div class="col-sm-6">
+                                <input type="text" id="txtEditarApellido" name="txtEditarApellido" class="form-control" onkeyup="validarEditar()">
+                                <div class="invalid-feedback">Apellido no válido</div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="txtTipo" class="col-sm-2 control-label"><strong>Tipo:</strong></label>
-                            <div class="col-sm-8">
-                                <input type="radio" id="padre" name="esObispo" class="form-control" value="padre">Padre
-                                <input type="radio" id="obispo" name="esObispo" class="form-control" value="obispo">Obispo
+                        <div class="input-group">
+                            <label for="esObispo" class="col-md-4 text-md-right"><strong>Tipo:</strong></label>
+                            <div class="col-sm-3">
+                                <input type="radio" id="padre" name="esObispo" class="radiobox" value="padre"> Padre
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="radio" id="obispo" name="esObispo" class="radiobox" value="obispo"> Obispo <br><br>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="col-sm-8">
-                                <input type="checkbox" id="padreActual" name="padreActual" class="form-control" value="true">Padre Actual
+                        <div class="input-group">
+                            <div class="col-sm-4">
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="checkbox" id="padreActual" name="padreActual" class="checkbox" value="true"> Padre Actual <br><br>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer ">
-                        <button type="submit" id="btnModificar" class="btn btn-primary btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span>Actualizar</button>
+                        <div class="form-group row mb-0">
+                                <div class="col-md-6 offset-md-4">
+                                <button type="submit" id="btnModificar" class="btn btn-primary btn-lg">Actualizar</button>
+                                </div>
+                            </div>
                     </div>
                 </div>
             </div>
@@ -195,10 +213,73 @@
     	}
 
         window.onload=function(){
+            var alerta = $("#alerta-success");
+			alerta.hide();
+            var alerta = $("#alerta-error");
+			alerta.hide();
 			$('.alert .close').on('click', function(e) {
     			$(this).parent().hide();
 			});
+
+            document.getElementById('btnGuardar').disabled = true;
 		}
+
+        //Validaciones
+        function validarNom(nom) {
+        if(nom == ""){
+            return false;
+        }
+        else{
+            var regex = /(^[a-zA-ZñÑáéíóúÁÉÍÓÚ]+$)|(^[a-zA-ZñÑáéíóúÁÉÍÓÚ]+ ?[a-zA-ZñÑáéíóúÁÉÍÓÚ]+$)|(^[a-zA-ZñÑáéíóúÁÉÍÓÚ]+ ?[a-zA-ZñÑáéíóúÁÉÍÓÚ]+ ?[a-zA-ZñÑáéíóúÁÉÍÓÚ]+$)/;
+            return regex.test(nom);
+        }
+        }
+        function validaciones(nombre, apellido){
+            var estado = false;
+            estado = (validarNom(nombre) && validarNom(apellido))
+            return estado;
+        }
+        //Validacion de formulario Crear
+        function validarCrear() {
+        var nombre=document.getElementById('txtNombre').value;
+        var apellido = document.getElementById('txtApellido').value;
+        if (!validarNom(nombre)){
+            document.getElementById('txtNombre').className = "form-control is-invalid";
+        }
+        else{
+            document.getElementById('txtNombre').className = "form-control";
+        }
+        if (!validarNom(apellido)){
+            document.getElementById('txtApellido').className = "form-control is-invalid";
+        }
+        else{
+            document.getElementById('txtApellido').className = "form-control";
+        }
+        
+        var esValido = validaciones(nombre, apellido);
+        document.getElementById('btnGuardar').disabled = !esValido;
+        }
+
+        //Validacion de formulario Editar
+        function validarEditar() {
+        var nombre=document.getElementById('txtEditarNombre').value;
+        var apellido = document.getElementById('txtEditarApellido').value;
+        if (!validarNom(nombre)){
+            document.getElementById('txtEditarNombre').className = "form-control is-invalid";
+        }
+        else{
+            document.getElementById('txtEditarNombre').className = "form-control";
+        }
+        if (!validarNom(apellido)){
+            document.getElementById('txtEditarApellido').className = "form-control is-invalid";
+        }
+        else{
+            document.getElementById('txtEditarApellido').className = "form-control";
+        }
+        
+        var esValido = validaciones(nombre, apellido);
+        document.getElementById('btnModificar').disabled = !esValido;
+        }
 
 		function mostrarModal(button){
 			$("#edit").modal();
@@ -223,7 +304,6 @@
             document.getElementById('txtEliminarCodigo').value = datosFila.split('|')[0];
             document.getElementById('txtEliminarNombre').innerHTML = datosFila.split('|')[1] + ' ' + datosFila.split('|')[2];
 		}
-
 
 		$(document).ready(function(){
 			$('#btnGuardar').click(function(e){

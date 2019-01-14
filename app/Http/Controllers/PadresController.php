@@ -7,6 +7,7 @@ use App\Padre;
 use App\Bautismo;
 use App\Confirma;
 use App\Matrimonio;
+use Illuminate\Validation\ValidationException;
 
 class PadresController extends Controller
 {
@@ -17,6 +18,18 @@ class PadresController extends Controller
     }
 
     public function crear(Request $request){
+		
+		try{
+		$rules=([
+            'txtNombre' => ['required', 'string','max:255'],
+            'txtApellido' => ['required', 'string', 'max:255'],
+        ]);
+		$this->validate($request,$rules);
+		}
+		catch (ValidationException $e) { 
+			return response($content = 'Datos erroneos, reintentar.', $status = 500); 
+		}
+		
 		if ($request->isMethod('post')){
 			if($request->has('txtNombre') && $request->has('txtApellido') && $request->txtNombre!="" && $request->txtApellido != ""){
 				$padre = new Padre;
@@ -41,11 +54,11 @@ class PadresController extends Controller
                     'apellido'=> $padre->apellido,
                     'tipo' => $padre->esObispo,
                     'actual' => $padre->padreActual,
-					'mensaje' => 'Padre Guardado'
+					'mensaje' => 'Padre Guardado.'
 				]);
 			}
 			else{
-				return response($content = 'Error, faltan datos', $status = 500);
+				return response($content = 'Faltan datos', $status = 500);
 			}
 		}
 		else{
@@ -55,23 +68,46 @@ class PadresController extends Controller
 	}
 
     public function editar(Request $request){
+		try{
+			$rules=([
+				'txtEditarNombre' => ['required', 'string','max:255'],
+				'txtEditarApellido' => ['required', 'string', 'max:255'],
+			]);
+			$this->validate($request,$rules);
+			}
+		catch (ValidationException $e) { 
+			return response($content = 'Datos erroneos, reintentar.', $status = 500); 
+		}
 		if ($request->isMethod('post')){
 			if($request->has('txtEditarNombre') && $request->has('txtEditarApellido') && $request->txtEditarNombre != "" && $request->txtEditarApellido != ""){
+				$mensaje="Cambios realizados.";
 				$padre = Padre::find($request->txtEditarCodigo);
                 $padre->nombre = $request->txtEditarNombre;
-                $padre->apellido = $request->txtEditarApellido;
+				$padre->apellido = $request->txtEditarApellido;
+				$actual=$padre->padreActual;
                 if ($request->esObispo == 'obispo'){
                     $padre->esObispo = true;
                 }
                 else{
                     $padre->esObispo = false;
-                }
-                if ($request->padreActual){
-                    $padre->padreActual = true;
-                }
-                else{
-                    $padre->padreActual = false;
-                }
+				}
+				
+				$cantActuales=Padre::where('padreActual', '=', true)->count();
+				
+			
+				if ($request->padreActual){
+						$padre->padreActual = true;
+				}
+				else{
+						if($actual and $cantActuales==1){
+							$padre->padreActual = true;
+							$mensaje="Cambios realizados, para desmarcar el padre actual debe seleccionar otro.";
+						}
+						else{
+							$padre->padreActual = false;
+						}
+				}
+				
                 $padre->save();
 				return response()->json([
 					'codigo' => $padre->id,
@@ -79,11 +115,11 @@ class PadresController extends Controller
                     'apellido'=> $padre->apellido,
                     'tipo' => $padre->esObispo,
                     'actual' => $padre->padreActual,
-					'mensaje' => 'Cambios realizados'
+					'mensaje' => $mensaje
 				]);
 			}
 			else{
-				return response($content = 'Error en datos, reintentar', $status = 500);
+				return response($content = 'Faltan datos.', $status = 500);
 			}
 		}
 		else{
@@ -109,11 +145,11 @@ class PadresController extends Controller
 				$padre->delete();
 				return response()->json([
 					'codigo' => $codigo,
-					'mensaje' => 'Padre Eliminado'
+					'mensaje' => 'Padre Eliminado.'
 				]);
 			}
 			else{
-				return response($content = 'Existen sacramentos realizados por este padre, no se puede eliminar ', $status = 500);
+				return response($content = 'Existen sacramentos realizados por este padre, no se puede eliminar.', $status = 500);
 			}
 		}
 		else{
