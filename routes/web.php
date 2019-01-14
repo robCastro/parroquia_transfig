@@ -12,6 +12,10 @@
 */
 
 Route::get('/', function () {
+    return redirect('login');
+});
+
+Route::get('home', function () {
     return view('welcome');
 });
 
@@ -33,7 +37,6 @@ Route::post('eliminar_persona', 'PersonasController@eliminar')->name('eliminar_p
 
 // Get Data
 Route::get('datatable/getdata', 'UsuariosController@getPosts')->name('datatable/getdata');
-
 
 Route::prefix('admin')->group(function()
 {

@@ -132,23 +132,6 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="activo" class="col-md-4 col-form-label text-md-right">Estado</label>
-
-                                <div class="col-md-6">
-                                    <select name="activo" class="form-control{{ $errors->has('activo') ? ' is-invalid' : '' }}" required>
-                                        <option value="" disabled selected>Elige una opcion...</option>
-                                        <option value="1">Activo</option>
-                                        <option value="0">Inactivo</option>
-                                    </select>
-                                    @if ($errors->has('activo'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('activo') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
                                 <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
                                 <div class="col-md-6">
