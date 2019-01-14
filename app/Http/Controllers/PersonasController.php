@@ -133,7 +133,11 @@ class PersonasController extends Controller
 				}
 				else{
 					//Reemplazar con redireccionar a detalle
-					return response($content = "Registro guardado correctamente. (Reemplazar con redireccionar a detalle).", $status = 200);
+					//return response($content = "Registro guardado correctamente. (Reemplazar con redireccionar a detalle).", $status = 200);
+                    //return redirect()->route('detalle_persona', ['id' => $persona->id]);
+                    return response($content = 'Nuevo id:'.$persona->id, $status=200);
+                    //se revisa el string en front, se hace un split para sacar el id y redireccionar a 
+                    //detalle de persona
 				}
 			}
 			else{
@@ -163,5 +167,32 @@ class PersonasController extends Controller
     	else{
     		return redirect('lista_personas');
     	}
+    }
+
+    public function detalle(Request $request, $id){
+        Log::debug($id);
+        if($id != ""){
+            try{
+                $persona = Persona::findOrFail((int)$id);
+            }
+            catch(ModelNotFoundException $e){
+                Log::debug("En Catch");
+                return redirect('lista_personas');
+            }
+            $salvadorenio = True;
+            try{
+                Log::debug($persona->municipio->departamento->nombre);
+                //probando acceso para verificar y no ser llamado en vista
+            }
+            catch(\ErrorException $e){
+                //Pleca invertida para que no busque clase en mi namespace
+                $salvadorenio = False;
+            }
+            $matrimonio = Matrimonio::where('esposo_id', $persona->id)->orWhere('esposa_id', $persona->id)->first();
+            return view('pages.detalle_persona', compact("persona", "salvadorenio", "matrimonio"));
+        }
+        else{
+            return redirect('lista_personas');
+        }
     }
 }

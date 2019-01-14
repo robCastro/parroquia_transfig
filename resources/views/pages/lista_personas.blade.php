@@ -2,6 +2,10 @@
 
 @section('content')
 
+    <style>
+        .celdaClic {cursor: pointer;}
+    </style>
+
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Personas</h1>
@@ -30,7 +34,7 @@
             @if ($personas->isEmpty())
                 <div>No hay Usuarios</div>
             @else
-            <table id="datatable" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%" style="text-align: center;">
+            <table id="datatable" class="table table-hover table-bordered table-sm" cellspacing="0" width="100%" style="text-align: center;">
                 <thead>
                     <tr>
                         <th>Apellidos</th>
@@ -51,10 +55,10 @@
 
                 <tbody>
                     @foreach($personas as $persona)
-                    <tr id="tr-{{ $persona->id }}">
-                        <td>{!!$persona->apellido!!}</td>
-                        <td>{!!$persona->nombre!!}</td>
-                        <td>{{$persona->fechanac}}</td>
+                    <tr id="tr-{{ $persona->id }}" data-target="{{ url('detalle_persona', $persona->id)}}">
+                        <td class="celdaClic" >{!!$persona->apellido!!}</td>
+                        <td class="celdaClic" >{!!$persona->nombre!!}</td>
+                        <td class="celdaClic" >{{$persona->fechanac}}</td>
                         <td>
                             <button class="btn btn-info btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" >
                                 <i class="fas fa-edit" ></i>
@@ -166,6 +170,10 @@
                     $("#alertError").prop("hidden", false);
                 }
             });
+        });
+
+        $(".celdaClic").click(function() {
+            window.location = $(this).parents('tr').data("target");
         });
     </script>
 @endsection

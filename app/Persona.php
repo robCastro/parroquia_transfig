@@ -9,11 +9,11 @@ class Persona extends Model
     public $timestamps = false;
 
 	public function municipio(){
-		return $this->belongsTo('App\Municipio');
+		return $this->belongsTo('App\Municipio', 'id_municipio');
 	}
 
 	public function nacionalidad(){
-		return $this->belongsTo('App\Nacionalidad');
+		return $this->belongsTo('App\Nacionalidad', 'id_nacionalidad');
 	}
 
 	public function bautismos(){

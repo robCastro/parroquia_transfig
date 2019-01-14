@@ -202,9 +202,17 @@
                 tipoGuardado : $(this).attr('id'),
             },
             success : function(response){
-                $(".btn").prop("disabled", false);
-                $("#msjExito").text(response);
-                $("#alertExito").prop("hidden", false);
+                if(response.includes("Nuevo id:")){
+                    var url_detalle = "{{ url('detalle_persona') }}";
+                    url_detalle = url_detalle + "/" + response.split(":")[1];
+                    window.location = url_detalle;
+                }
+                else{
+                    $(".btn").prop("disabled", false);
+                    $("#msjExito").text(response);
+                    $("#alertExito").prop("hidden", false);
+                }
+                
             },
             error: function(response){
                 $(".btn").prop("disabled", false);
