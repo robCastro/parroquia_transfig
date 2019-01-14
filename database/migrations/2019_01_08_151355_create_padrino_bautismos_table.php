@@ -22,7 +22,7 @@ class CreatePadrinoBautismosTable extends Migration
             //fks
             $table->unsignedInteger('bautismo_id');
 
-            $table->foreign('bautismo_id')->references('id')->on('bautismos');
+            $table->foreign('bautismo_id')->references('id')->on('bautismos')->onDelete('cascade');
         });
     }
 
