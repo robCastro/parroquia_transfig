@@ -118,7 +118,7 @@
                 dataType: 'json',
                 success : function(response){
                     console.log(response);
-                    let mensaje = "";
+                    var mensaje = "";
                     if (response.cantBautismos > 0 || response.cantConfirmas > 0 || response.cantMatrimonios){
                         mensaje = "<p>Esta persona cuenta con registro de:</p>";
                         if (response.cantBautismos > 0)
@@ -159,13 +159,11 @@
                     tabla.row($("#tr-"+idPersona)).remove().draw();
                     $("#msjExito").text(response);
                     $("#alertExito").prop("hidden", false);
-                    $("#msjModal").html("");
                 },
                 error: function(response){
                     console.log(response.responseText);
                     $("#msjError").text(response.responseText);
                     $("#alertError").prop("hidden", false);
-                    $("#msjModal").html("");
                 }
             });
         });
