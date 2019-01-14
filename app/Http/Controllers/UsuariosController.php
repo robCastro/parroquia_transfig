@@ -13,6 +13,12 @@ use Illuminate\Support\Facades\Validator;
 
 class UsuariosController extends Controller
 {
+
+	public function __construct()
+    {
+        $this->middleware('auth');
+    }
+	
     public function index()
     {
     	$users = User::where('type', 'user')->get();
@@ -34,7 +40,7 @@ class UsuariosController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'type' => 'user',
-            'activo' => $data['activo'],
+            'activo' => 'true',
         ]);
 
         return redirect("admin/asistentes")->with('success','Registro creado satisfactoriamente');;

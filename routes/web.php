@@ -12,24 +12,15 @@
 */
 
 Route::get('/', function () {
+    return redirect('login');
+});
+
+Route::get('home', function () {
     return view('welcome');
 });
 
 Auth::routes();
 
-//Route::get('/home', 'HomeController@index')->name('home');
-
-
-Route::get('index', 'UsuariosController@index');
-
-// Get Data
-Route::get('datatable/getdata', 'UsuariosController@getPosts')->name('datatable/getdata');
-
-//Patricia
-Route::get('padres', 'PadresController@index')->name('padres');
-Route::post('padres_crear', 'PadresController@crear')->name('padres_crear');
-Route::post('padres_editar', 'PadresController@editar')->name('padres_editar');
-Route::post('padres_eliminar', 'PadresController@eliminar')->name('padres_eliminar');
 
 Route::prefix('admin')->group(function()
 {
@@ -45,3 +36,9 @@ Route::prefix('admin')->group(function()
 	Route::post('edificios_editar', 'EdificiosController@editar')->name('edificios_editar');*/
 
 });
+
+//Patricia
+Route::get('padres', 'PadresController@index')->name('padres');
+Route::post('padres_crear', 'PadresController@crear')->name('padres_crear');
+Route::post('padres_editar', 'PadresController@editar')->name('padres_editar');
+Route::post('padres_eliminar', 'PadresController@eliminar')->name('padres_eliminar');
