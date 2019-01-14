@@ -30,7 +30,7 @@ class IsAdmin
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {
-                return redirect()->to('auth/login');
+                return redirect()->to('/');
             }
         }
 

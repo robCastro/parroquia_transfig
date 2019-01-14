@@ -12,18 +12,14 @@
 */
 
 Route::get('/', function () {
+    return redirect('login');
+});
+
+Route::get('home', function () {
     return view('welcome');
 });
 
 Auth::routes();
-
-//Route::get('/home', 'HomeController@index')->name('home');
-
-
-Route::get('index', 'UsuariosController@index');
-
-// Get Data
-Route::get('datatable/getdata', 'UsuariosController@getPosts')->name('datatable/getdata');
 
 
 Route::prefix('admin')->group(function()
