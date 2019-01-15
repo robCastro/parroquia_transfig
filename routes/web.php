@@ -15,9 +15,6 @@ Route::get('/', function () {
     return redirect('login');
 });
 
-Route::get('home', function () {
-    return view('welcome');
-});
 
 Auth::routes();
 
@@ -25,14 +22,15 @@ Auth::routes();
 Route::prefix('admin')->group(function()
 {
 	//Marisol
-	Route::get('asistentes', 'UsuariosController@index')->name('asistentes')->middleware('auth');
+	Route::get('asistentes', 'UsuariosController@index')->name('asistentes')->middleware('auth', 'is_admin');
 	Route::post('asistente_crear', 'UsuariosController@create')->name('asistente_crear')->middleware('auth');
-	//Route::post('edificios_eliminar', 'EdificiosController@eliminar')->name('edificios_eliminar');
-	//Route::post('edificios_editar', 'EdificiosController@editar')->name('edificios_editar');
+	Route::post('asistente_editar', 'UsuariosController@editar')->name('asistente_editar');
+	Route::post('asistente_editPass', 'UsuariosController@edit')->name('asistente_editPass');
+	Route::post('asistente_eliminar', 'UsuariosController@eliminar')->name('asistente_eliminar');
+
 
 	/*Route::get('confirmacion', 'UsuariosController@index')->name('aspirantes');
 	Route::post('edificios_guardar', 'EdificiosController@guardar')->name('edificios_guardar');
-	Route::post('edificios_eliminar', 'EdificiosController@eliminar')->name('edificios_eliminar');
 	Route::post('edificios_editar', 'EdificiosController@editar')->name('edificios_editar');*/
 
 });

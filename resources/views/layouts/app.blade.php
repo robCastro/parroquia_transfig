@@ -20,13 +20,18 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link  href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/bootstrapadd.min.css') }}">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
 
     <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
     <style>
       .bd-placeholder-img {
         font-size: 1.125rem;
@@ -42,64 +47,43 @@
 
   </head>
   <body>
-    <nav class="navbar fixed-top flex-md-nowrap p-0 shadow menu">
-      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">La Transfiguracion</a>  
-      <div>
-        <!-- Left Side Of Navbar -->
-        <ul class="navbar-nav mr-auto">
+    <div id="wrapper" class="active">
+      
+      @include('includes.sidebar')
 
-        </ul>
+      <div id="page-content-wrapper">
+        <div class="page-content inset">
+          <div class="row">
+            <nav class="navbar fixed-top navbar-expand-lg menu" style="float: right;">
+                <!-- Right Side Of Navbar -->
+                <ul class="navbar-nav ml-auto" style="float: right;">
+                    <!-- Authentication Links -->
+                    @guest
+                        
+                    @else
+                        <li class="nav-item dropdown">
+                            <button id="navbarDropdown" class="btn dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">
+                                {{ Auth::user()->name }} <span class="caret"></span>
+                            </button>
 
-        <!-- Right Side Of Navbar -->
-        <ul class="navbar-nav ml-auto">
-            <!-- Authentication Links -->
-            @guest
-                
-            @else
-                <li class="dropdown">
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                        {{ Auth::user()->name }} <span class="caret"></span>
-                    </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault();
+                                                 document.getElementById('logout-form').submit();" style="color: black;">
+                                    {{ __('Logout') }}
+                                </a>
 
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{{ route('logout') }}"
-                           onclick="event.preventDefault();
-                                         document.getElementById('logout-form').submit();">
-                            {{ __('Logout') }}
-                        </a>
-
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            @csrf
-                        </form>
-                    </div>
-                    
-                </li>
-                <div class="dropdown">
-                      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">{{ Auth::user()->name }}
-                      <span class="caret"></span></button>
-                      <ul class="dropdown-menu">
-                        <li class="dropdown-header">Dropdown header 1</li>
-                        <li><a href="#">HTML</a></li>
-                        <li><a href="#">CSS</a></li>
-                        <li><a href="#">JavaScript</a></li>
-                        <li class="divider"></li>
-                        <li class="dropdown-header">Dropdown header 2</li>
-                        <li><a href="#">About Us</a></li>
-                      </ul>
-                    </div>
-            @endguest
-        </ul>
-      </div>
-
-     
-    </nav>
-
-    <div class="container-fluid">
-      <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-          @include('includes.sidebar')
-        </nav>
-        @yield('content')
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            </div>
+                        </li>
+                    @endguest
+                </ul>
+            </nav>    
+            @yield('content')
+          </div>
+        </div>
       </div>
     </div>
     
@@ -112,6 +96,11 @@
       $("#success-alert").fadeTo(6000, 500).slideUp(500, function(){
           $(".alert-dismissible").alert('close');
       });
+
+      $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("active");
+});
   </script>
   </body>
 </html>
