@@ -55,3 +55,9 @@ Route::prefix('admin')->group(function()
 	Route::post('edificios_editar', 'EdificiosController@editar')->name('edificios_editar');*/
 
 });
+
+//Patricia
+Route::get('padres', 'PadresController@index')->name('padres');
+Route::post('padres_crear', 'PadresController@crear')->name('padres_crear');
+Route::post('padres_editar', 'PadresController@editar')->name('padres_editar');
+Route::post('padres_eliminar', 'PadresController@eliminar')->name('padres_eliminar');
