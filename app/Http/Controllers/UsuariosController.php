@@ -40,7 +40,7 @@ class UsuariosController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'type' => 'user',
-            'activo' => 'true',
+            'estado' => 'act',
         ]);
 
         return redirect("admin/asistentes")->with('success','Registro creado satisfactoriamente');;
