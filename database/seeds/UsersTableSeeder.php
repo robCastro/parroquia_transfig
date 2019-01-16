@@ -19,6 +19,7 @@ class UsersTableSeeder extends Seeder
         	'password' => bcrypt('GrupoTpi3'),
             'estado' => 'act',
             'type' => 'admin',
+
         ]);
     }
 }
