@@ -22,7 +22,7 @@ class CreatePadrinoConfirmasTable extends Migration
             //fks
             $table->unsignedInteger('confirma_id');
 
-            $table->foreign('confirma_id')->references('id')->on('confirmas');
+            $table->foreign('confirma_id')->references('id')->on('confirmas')->onDelete('cascade');
         });
     }
 

@@ -22,7 +22,7 @@ class CreatePadrinoMatrimoniosTable extends Migration
             //fks
             $table->unsignedInteger('matrimonio_id');
 
-            $table->foreign('matrimonio_id')->references('id')->on('matrimonios');
+            $table->foreign('matrimonio_id')->references('id')->on('matrimonios')->onDelete('cascade');
         });
     }
 
