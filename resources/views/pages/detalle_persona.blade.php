@@ -128,8 +128,10 @@
                         <td style="vertical-align:middle">Confirma</td>
                         <td style="vertical-align:middle">----</td>
                         <td style="vertical-align:middle">
-                            <button class="btn btn-primary btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" >
-                                <i class="fas fa-plus-circle" ></i>
+                            <button class="btn btn-primary btn-xs btnCrear" type="button" id="create-{{ $persona->id }}" >
+                                <a href="{{url ('crear_confirma', $persona->id)}}" style="color: white">
+                                    <i class="fas fa-plus-circle" ></i>
+                                </a>
                             </button>
                         </td>
                     </tr>

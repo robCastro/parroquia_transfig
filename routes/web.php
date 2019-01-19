@@ -18,12 +18,6 @@ Route::get('/', function () {
 
 Auth::routes();
 
-//Route::get('/home', 'HomeController@index')->name('home');
-
-
-Route::get('index', 'UsuariosController@index');
-
-
 //Roberto
 Route::any('lista_personas', 'PersonasController@listar')->name('lista_personas');
 Route::any('crear_persona', 'PersonasController@create')->name('crear_persona');
@@ -35,24 +29,16 @@ Route::get('detalle_persona/{id}', 'PersonasController@detalle')->where('id', '[
 Route::get('editar_persona/{id}', 'PersonasController@edit')->where('id', '[0-9]+')->name('editar_persona');
 Route::post('guardar_editar_persona', 'PersonasController@guardarEdit')->name('guardar_editar_persona');
 
-// Get Data
-Route::get('datatable/getdata', 'UsuariosController@getPosts')->name('datatable/getdata');
 
-Route::prefix('admin')->group(function()
-{
-	//Marisol
-	Route::get('asistentes', 'UsuariosController@index')->name('asistentes')->middleware('auth', 'is_admin');
-	Route::post('asistente_crear', 'UsuariosController@create')->name('asistente_crear')->middleware('auth');
-	Route::post('asistente_editar', 'UsuariosController@editar')->name('asistente_editar');
-	Route::post('asistente_editPass', 'UsuariosController@edit')->name('asistente_editPass');
-	Route::post('asistente_eliminar', 'UsuariosController@eliminar')->name('asistente_eliminar');
+//Marisol
+Route::get('asistentes', 'UsuariosController@index')->name('asistentes')->middleware('auth', 'is_admin');
+Route::post('asistente_crear', 'UsuariosController@create')->name('asistente_crear')->middleware('auth');
+Route::post('asistente_editar', 'UsuariosController@editar')->name('asistente_editar');
+Route::post('asistente_editPass', 'UsuariosController@edit')->name('asistente_editPass');
+Route::post('asistente_eliminar', 'UsuariosController@eliminar')->name('asistente_eliminar');
 
-
-	/*Route::get('confirmacion', 'UsuariosController@index')->name('aspirantes');
-	Route::post('edificios_guardar', 'EdificiosController@guardar')->name('edificios_guardar');
-	Route::post('edificios_editar', 'EdificiosController@editar')->name('edificios_editar');*/
-
-});
+Route::get('crear_confirma/{id}', 'ConfirmaController@create')->where('id', '[0-9]+')->name('crear_confirma');
+Route::post('padrinos_confirma', 'ConfirmaController@addPadrino')->name('padrinos_confirma');
 
 //Patricia
 Route::get('padres', 'PadresController@index')->name('padres');
