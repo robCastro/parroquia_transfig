@@ -40,6 +40,8 @@ Route::get('hombres_no_casados', 'PersonasController@hombresNoCasados')->name('h
 Route::post('guardar_nuevo_matrimonio', 'MatrimoniosController@guardar')->name('guardar_nuevo_matrimonio');
 Route::get('detalle_matrimonio/{id}', 'MatrimoniosController@detalle')->where('id', '[0-9]+')->name('detalle_matrimonio');
 Route::post('eliminar_matrimonio', 'MatrimoniosController@eliminar')->name('eliminar_matrimonio');
+Route::get('editar_matrimonio/{id}', 'MatrimoniosController@ver_editar')->where('id', '[0-9]+')->name('editar_matrimonio');
+Route::post('guardar_editar_matrimonio/{id}', 'MatrimoniosController@guardar_editar')->where('id', '[0-9]+')->name('guardar_editar_matrimonio');
 
 // Get Data
 Route::get('datatable/getdata', 'UsuariosController@getPosts')->name('datatable/getdata');

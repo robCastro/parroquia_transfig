@@ -222,6 +222,7 @@ class PersonasController extends Controller
             }
             $salvadorenio = True;
             try{
+                $persona->municipio->nombre;
                 //probando acceso para verificar y no ser llamado en vista
             }
             catch(\ErrorException $e){
@@ -247,6 +248,7 @@ class PersonasController extends Controller
             $salvadorenio = True;
             try{
                 //probando acceso para verificar y no ser llamado en vista
+                $persona->municipio->nombre;
             }
             catch(\ErrorException $e){
                 //Pleca invertida para que no busque clase en mi namespace

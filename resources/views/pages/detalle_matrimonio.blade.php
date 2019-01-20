@@ -11,7 +11,7 @@
                         <button class="btn btn-primary btn-xs btnDescargar" type="button" id="down-" onclick="window.location = '#'">
                                 <i class="fas fa-download" ></i>
                         </button>
-                        <button class="btn btn-info btn-xs btnEditar" type="button" id="edit-" onclick="window.location = '#'" >
+                        <button class="btn btn-info btn-xs btnEditar" type="button" id="edit-" onclick="window.location = '{{ url('editar_matrimonio', $idPersona) }}'" >
                             <i class="fas fa-edit" ></i>
                         </button>
                         <button class="btn btn-danger btn-xs btnEliminar" data-toggle="modal" data-target="#modalDelete" type="button" id="delete-">

@@ -142,7 +142,7 @@
                             <button class="btn btn-primary btn-xs btnDescargar" type="button" id="edit-{{ $persona->id }}" >
                                 <i class="fas fa-download" ></i>
                             </button>
-                            <button class="btn btn-info btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" >
+                            <button onclick="window.location = '{{ url('editar_matrimonio', $persona->id) }}';" class="btn btn-info btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" >
                                 <i class="fas fa-edit" ></i>
                             </button>
                             <button class="btn btn-danger btn-xs" type="button" id="delete-matrimonio">

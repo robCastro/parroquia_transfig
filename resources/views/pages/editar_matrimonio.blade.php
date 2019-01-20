@@ -5,7 +5,7 @@
     <main role="main" class="ml-sm-auto col-lg-12 px-4">
         
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Nuevo Matrimonio</h1>
+            <h1 class="h2">Matrimonio de {{ $esposo->nombre }} y {{ $esposa->nombre }}</h1>
         </div>
         
         <!-- Alerta error -->
@@ -27,27 +27,8 @@
             <table width="70%" cellpadding="10">
                 <tr>
                     <div class="form-group">
-                        <td><label for="txtNombre"><strong>Esposo:</strong></label></td>
-                        <td>
-                            <input class="form-control" type="text" id="txtEsposo">
-                            <strong id="idEsposo" hidden=""></strong>
-                        </td>
-                    </div>
-                </tr>
-                <tr>
-                    <div class="form-group">
-                        <td><label for="txtEsposa"><strong>Esposa:</strong></label></td>
-                        <td>
-                            <input class="form-control" type="text" id="txtEsposa">
-                            <strong id="idEsposa" hidden=""></strong>
-                        </td>
-
-                    </div>
-                </tr>
-                <tr>
-                    <div class="form-group">
                         <td><label for="txtFechaNac"><strong>Fecha:</strong></label></td>
-                        <td><input required="" class="form-control" type="date" id="txtFecha"></td>
+                        <td><input class="form-control" value="{{ $matrimonio->fecha }}" type="date" id="txtFecha"></td>
                     </div>
                 </tr>
                 <tr>
@@ -55,7 +36,7 @@
                         <td><label for="txtPapa"><strong>Padre:</strong></label></td>
                         <td><select id="slcPadre" class="form-control">
                             @foreach ($padres as $padre)
-                                <option value="{{ $padre->id }}" @if($padre->padreActual) selected @endif>
+                                <option value="{{ $padre->id }}" @if($padre->id == $matrimonio->padre->id) selected @endif>
                                     {{ $padre->nombre }} {{ $padre->apellido }}
                                 </option>
                             @endforeach
@@ -67,9 +48,9 @@
                         <td><label><strong>Ubicación:</strong></label></td>
                         <td>
                             <label for="txtLibro">Libro:</label>
-                            <input type="text" id="txtLibro" name="txtLibro">
+                            <input type="text" id="txtLibro" value="{{ $matrimonio->libro }}" name="txtLibro">
                             <label for="txtFolio">Folio:</label>
-                            <input type="text" id="txtFolio" name="txtFolio">
+                            <input type="text" id="txtFolio" value="{{ $matrimonio->folio }}" name="txtFolio">
                         </td>
                     </div>
                 </tr>
@@ -123,6 +104,20 @@
                         <th>Sexo</th>
                         <th></th>
                     </thead>
+                    <tbody>
+                        @foreach($matrimonio->padrinos()->get() as $padrino)
+                        <tr>
+                            <td>{{ $padrino->nombre }}</td>
+                            <td>{{ $padrino->apellido }}</td>
+                            <td>@if($padrino->sexo) Masculino @else Femenino @endif</td>
+                            <td>
+                                <button class="btn btn-danger btn-xs btnEliminar" onclick="eliminarFila(this)" type="button" id="delete">
+                                    <i class="fas fa-trash-alt" ></i>
+                                </button>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
                 </table>
             </div>  
             <div style="padding-top: 5%; padding-left: 80%">
@@ -132,7 +127,7 @@
                             <button type="submit" id="btnGuardar" class="btn boton btn-primary">Guardar</button>
                         </td>
                         <td>
-                            <button type="button" onclick="window.location.href = '{{ url ('lista_personas') }}';" class="btn btn-block btn-default btn-flat">Cancelar</button>
+                            <button type="button" onclick="window.location.href = '{{ url ('detalle_persona', $idPersona) }}';" class="btn btn-block btn-default btn-flat">Cancelar</button>
                         </td>
                     </tr>
                 </table>
@@ -183,71 +178,6 @@
         }
     });
 
-
-    $( "#txtEsposo" ).autocomplete({
-        source: function(request, response){
-            $("#btnGuardar").prop("disabled", true);
-            $.getJSON("{{ url('hombres_no_casados') }}", {
-                term : request.term,
-                sexo : "M",
-            }
-            , response);
-        },
-        minLength: 3,
-        delay: 500,
-        select : function(event, ui){
-            $("#txtEsposo").val(ui.item.label);
-            $("#idEsposo").text(ui.item.value);
-            $("#btnGuardar").prop("disabled", false);
-            //Return false por la documentacion, no sé realmente para que sirve
-            return false;
-        },
-        response: function(event, ui){
-            if(ui.content.length == 0){
-                $("#msjError").text("No hay registros que corresponde a la busqueda.");
-                $("#alertError").prop("hidden", false);
-            }
-            else{
-                $("#alertError").prop("hidden", true);
-            }
-        },
-        search: function(event, ui){
-            $("#idEsposo").text("");
-        },
-    });
-
-    $( "#txtEsposa" ).autocomplete({
-        source: function(request, response){
-            $("#btnGuardar").prop("disabled", true);
-            $.getJSON("{{ url('hombres_no_casados') }}", {
-                term : request.term,
-                sexo : "F",
-            }
-            , response);
-        },
-        minLength: 3,
-        delay: 500,
-        select : function(event, ui){
-            $("#txtEsposa").val(ui.item.label);
-            $("#idEsposa").text(ui.item.value);
-            $("#btnGuardar").prop("disabled", false);
-            //Return false por la documentacion, no sé realmente para que sirve
-            return false;
-        },
-        response: function(event, ui){
-            if(ui.content.length == 0){
-                $("#msjError").text("No hay registros que corresponde a la busqueda.");
-                $("#alertError").prop("hidden", false);
-            }
-            else{
-                $("#alertError").prop("hidden", true);
-            }
-        },
-        search: function(event, ui){
-            $("#idEsposa").text("");
-        },
-    });
-
     $("#btnAgregar").click(function(){
         var tabla = $("#datatable").DataTable();
 
@@ -269,17 +199,6 @@
             if ($("#radioFemenino").prop("checked")){
                 sexo = "Femenino";
             }
-            /*var boton = document.createElement("BUTTON");
-            boton.type = "button";
-            boton.classList.add("btn");
-            boton.classList.add("btn-danger");
-            boton.classList.add("btn-xs");
-            boton.classList.add("btnEliminar");
-            boton.onclick = eliminarFila;
-            var i = document.createElement("i");
-            i.classList.add("fas");
-            i.classList.add("fa-trash-alt");
-            boton.appendChild(i);*/
             tabla.row.add([
                 $("#txtNombre").val(),
                 $("#txtApellido").val(),
@@ -287,11 +206,6 @@
                 '<button class="btn btn-danger btn-xs btnEliminar" onclick="eliminarFila(this)" type="button" id="delete"><i class="fas fa-trash-alt" ></i></button>',
                 
             ]).draw();
-            //console.log(tabla.cell((tabla.row().count()-1), 3).append(boton));
-            /*console.log(tabla.row(tabla.rows().count()-1).index());
-            var tablaNormal = document.getElementById("datatable");
-            var index = tablaNormal.rows.length - 1;
-            tablaNormal.rows[index].cells[3].append(boton);*/
             $("#alertError").prop("hidden", true);
             $("#txtNombre").val("");
             $("#txtApellido").val("");
@@ -363,29 +277,20 @@
             $("#btnGuardar").prop("disabled", false);
             return;
         }
-        console.log("Datos");
-        console.log($("#idEsposo").html());
-        console.log($("#idEsposa").html());
-        console.log($("#txtFecha").val());
-        console.log($("#slcPadre").val());
-        console.log($("#txtLibro").val());
-        console.log($("#txtFolio").val());
         var padrinos = "";
         for( i = 0; i < tabla.rows().count(); i++){
             padrinos += tabla.row(i).data()[0] + "(//)";
             padrinos += tabla.row(i).data()[1] + "(//)";
             padrinos += tabla.row(i).data()[2] + "(&&)";
         }
-        cantPadrinos = tabla.rows().count();
-        console.log(tabla.rows().count());
-        console.log(padrinos);
+        var cantPadrinos = tabla.rows().count();
+        //$("#btnGuardar").prop("disabled", false);
+        //return;
         $.ajax({
             type: 'POST',
-            url: '{{ url('guardar_nuevo_matrimonio') }}',
+            url: '{{ url('guardar_editar_matrimonio', $idPersona) }}',
             data: {
                 "_token": "{{ csrf_token() }}",
-                idEsposo : $("#idEsposo").html(),
-                idEsposa : $("#idEsposa").html(),
                 fecha : $("#txtFecha").val(),
                 padre: $("#slcPadre").val(),
                 libro : $("#txtLibro").val(),
@@ -396,12 +301,8 @@
             success : function(response){
                 
                 $("#btnGuardar").prop("disabled", false);
-                $("#txtEsposo").val("");
-                $("#idEsposo").html("");
-                $("#txtEsposa").val("");
-                $("#idEsposa").html("");
                 //response recibe id del esposo
-                window.location = "{{ url('detalle_matrimonio') }}" + "/" + response;
+                window.location = "{{ url('detalle_matrimonio', $idPersona) }}";
             },
             error: function(response){
                 $(".btn").prop("disabled", false);
@@ -411,43 +312,5 @@
             },
         });
     });
-
-    /*$(".boton").click(function(){
-        $(".btn").prop("disabled", true);
-        $.ajax({
-            type: 'POST',
-            url: '',
-            data: {
-                "_token": "{{ csrf_token() }}",
-                nombre : $("#txtNombre").val(),
-                apellido : $("#txtApellido").val(),
-                fechaNac : $("#txtFechaNac").val(),
-                papa : $("#txtPapa").val(),
-                mama : $("#txtMama").val(),
-                sexo : $("#radioMasculino").prop("checked"),
-                pais : $("#slcPais").val(),
-                municipio : $("#slcMunicipio").val(),
-                tipoGuardado : $(this).attr('id'),
-            },
-            success : function(response){
-                if(response.includes("Nuevo id:")){
-                    var url_detalle = "";
-                    url_detalle = url_detalle + "/" + response.split(":")[1];
-                    window.location = url_detalle;
-                }
-                else{
-                    $(".btn").prop("disabled", false);
-                    $("#msjExito").text(response);
-                    $("#alertExito").prop("hidden", false);
-                }
-                
-            },
-            error: function(response){
-                $(".btn").prop("disabled", false);
-                $("#msjError").text(response.responseText);
-                $("#alertError").prop("hidden", false);
-            },
-        });
-    });*/
 </script>
 @endsection

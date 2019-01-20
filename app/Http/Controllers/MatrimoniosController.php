@@ -44,8 +44,8 @@ class MatrimoniosController extends Controller
 
     public function guardar(Request $request){
     	if($request->isMethod('POST') ){
-    		if ($request->has("idEsposo") && $request->has("idEsposa") && $request->has("fecha") && $request->has("fecha") && $request->has("padre") && $request->has("libro") && $request->has("folio")){
-    			
+    		if ($request->has("idEsposo") && $request->has("idEsposa") && $request->has("fecha") && $request->has("padre") && $request->has("libro") && $request->has("folio")){
+
     			$matrimonio = new Matrimonio;
     			$matrimonio->esposo_id = $request->idEsposo;
     			$matrimonio->esposa_id = $request->idEsposa;
@@ -80,5 +80,55 @@ class MatrimoniosController extends Controller
     	else{
     		return redirect('lista_personas');
     	}
+    }
+
+    public function ver_editar($idPersona){
+        $matrimonio = Matrimonio::where("esposo_id", $idPersona)->orWhere("esposa_id", $idPersona)->first();
+        try{
+            $esposo = Persona::find($matrimonio->esposo_id);
+            $esposa = Persona::find($matrimonio->esposa_id);
+        }
+        catch(\ErrorException $e){
+            //catch en caso que matrimonio sea null
+            return redirect('lista_personas');
+        }
+        $padres = Padre::all();
+        Log::debug($matrimonio->padrinos()->get());
+        //se envia idPersona para hacer links a detalle persona
+        return view('pages.editar_matrimonio', compact("matrimonio", "esposo", "esposa", "idPersona", "padres"));
+    }
+
+
+    public function guardar_editar(Request $request, $idPersona){
+        $matrimonio = Matrimonio::where("esposo_id", $idPersona)->orWhere("esposa_id", $idPersona)->first();
+        try{
+            $matrimonio->esposo_id;
+        }
+        catch(\ErrorException $e){
+            //catch en caso que matrimonio sea null
+            return redirect('lista_personas');
+        }
+        if($request->has("fecha") && $request->has("padre") && $request->has("libro") && $request->has("folio")){
+            $matrimonio->padre_id = $request->padre;
+            $matrimonio->fecha = $request->fecha;
+            $matrimonio->libro = $request->libro;
+            $matrimonio->folio = $request->folio;
+            $matrimonio->save();
+            
+            $matrimonio->padrinos()->delete();
+
+            $arrayPadrinos = explode("(&&)", $request->padrinos);
+
+            for ($i=0; $i < (int)$request->cantPadrinos; $i++) { 
+                $columnasPadrino = explode("(//)", $arrayPadrinos[$i]);
+                $padrino = new PadrinoMatrimonio;
+                $padrino->nombre = $columnasPadrino[0];
+                $padrino->apellido = $columnasPadrino[1];
+                $padrino->sexo = $columnasPadrino[2] == "Masculino";
+                $padrino->matrimonio_id = $matrimonio->id;
+                $padrino->save();
+            }
+            return response($content = "", $status = 200);
+        }
     }
 }
