@@ -15,6 +15,7 @@ use App\Nacionalidad;
 use App\Departamento;
 use App\Municipio;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 
 class PersonasController extends Controller
 {
@@ -26,6 +27,49 @@ class PersonasController extends Controller
     	}*/
     	$personas = Persona::all();
     	return view('pages.lista_personas', compact("personas"));
+    }
+
+    public function hombresNoCasados(Request $request){
+        if($request->has('term')){
+            $nombre = $request->term;
+        }
+        else{
+            $nombre = "";
+        }
+        if (!$request->has("sexo") || $request->sexo == ""){
+            $request->sexo = "M";
+        }
+        $codigosCasadas = DB::table('matrimonios')->select('esposa_id as persona_id');
+        $codigosCasados = DB::table('matrimonios')->select('esposo_id as persona_id')->union($codigosCasadas)->get();
+        if ($nombre != ""){
+            //$personas = Persona::all()->where('sexo', true)->where('nombre', 'like', '%' . $nombre . '%');
+            $personas = DB::table('personas')->where('sexo', $request->sexo == "M")->where('nombre', 'ilike', '%' . $nombre . '%')->orWhere('apellido', 'ilike', '%' . $nombre . '%');
+        }
+        else{
+            //$personas = Persona::all()->where('sexo', true);
+            $personas = DB::table('personas')->where('sexo', $request->sexo == "M");
+        }
+        if ($codigosCasados->isNotEmpty()){
+            $personas = $personas->get()->whereNotIn('id', array_column($codigosCasados->toArray(), 'persona_id'));
+        }
+        /*
+
+        El plugin de autocomplete requiere de cierto formato especifico para mostrar el autocompletado
+        El formato que se está dando acá está basado en 
+
+        https://stackoverflow.com/questions/5905560/jquery-autocomplete-remote-example
+
+        Consiste en un array de 2 dimensiones que posteriormente es transformado a JSON.
+
+        */
+        $arrayPersonas = array();
+        foreach ($personas as $persona) {
+            array_push($arrayPersonas, array(
+                'label' => $persona->nombre . " " . $persona->apellido,
+                'value' => $persona->id,
+            ));
+        }
+        return response()->json($arrayPersonas);
     }
 
     public function create(){
@@ -178,7 +222,6 @@ class PersonasController extends Controller
             }
             $salvadorenio = True;
             try{
-                Log::debug($persona->municipio->departamento->nombre);
                 //probando acceso para verificar y no ser llamado en vista
             }
             catch(\ErrorException $e){
@@ -203,7 +246,6 @@ class PersonasController extends Controller
             }
             $salvadorenio = True;
             try{
-                Log::debug($persona->municipio->departamento->nombre);
                 //probando acceso para verificar y no ser llamado en vista
             }
             catch(\ErrorException $e){
@@ -227,7 +269,6 @@ class PersonasController extends Controller
     }
 
     public function guardarEdit(Request $request){
-        Log::debug("Prueba de guardado de edicion");
         if ($request->isMethod('POST') && $request->has('id') && $request->id != ""){
             try{
                 $persona = Persona::findOrFail((int)$request->id);
@@ -235,7 +276,6 @@ class PersonasController extends Controller
             catch(ModelNotFoundException $e){
                 return redirect('lista_personas');
             }
-            Log::debug($persona);
             $mensaje = "Errores encontrados:";
             $nombreValido = False;
             $apellidoValido = False;
@@ -294,7 +334,6 @@ class PersonasController extends Controller
                     $persona->id_municipio = NULL;
                 }
                 $persona->save();
-                Log::debug($persona);
                 return response($content = 'Registro guardado correctamente.', $status = 200);
             }
             else{

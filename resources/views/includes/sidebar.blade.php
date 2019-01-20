@@ -4,7 +4,7 @@
   </ul>
   <ul class="sidebar-nav" id="sidebar" style="text-align: justify;">
     <li class="nav-item {{ request()->is('') ? 'active' : '' }}">
-      <a href="#">
+      <a href="{{ url('lista_personas') }}">
         Personas <i id="sub_icon" class="fas fa-user fa-lg"></i>
       </a>
     </li>

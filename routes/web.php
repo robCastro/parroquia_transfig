@@ -35,6 +35,12 @@ Route::get('detalle_persona/{id}', 'PersonasController@detalle')->where('id', '[
 Route::get('editar_persona/{id}', 'PersonasController@edit')->where('id', '[0-9]+')->name('editar_persona');
 Route::post('guardar_editar_persona', 'PersonasController@guardarEdit')->name('guardar_editar_persona');
 
+Route::get('nuevo_matrimonio/{id?}', 'MatrimoniosController@nuevo')->where('id', '[0-9]+')->name('nuevo_matrimonio');
+Route::get('hombres_no_casados', 'PersonasController@hombresNoCasados')->name('hombres_no_casados');
+Route::post('guardar_nuevo_matrimonio', 'MatrimoniosController@guardar')->name('guardar_nuevo_matrimonio');
+Route::get('detalle_matrimonio/{id}', 'MatrimoniosController@detalle')->where('id', '[0-9]+')->name('detalle_matrimonio');
+Route::post('eliminar_matrimonio', 'MatrimoniosController@eliminar')->name('eliminar_matrimonio');
+
 // Get Data
 Route::get('datatable/getdata', 'UsuariosController@getPosts')->name('datatable/getdata');
 
