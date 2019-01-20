@@ -20,23 +20,22 @@
             <h4><i class="icon fa fa-check"></i> Exito!</h4>
             <strong id="msjExito"></strong>
         </div>
-
-
+        
         <div style="padding-top: 2%; padding-left: 3%" id="divForm">
-            <form id="nuevaPersona" method="post">
-                @csrf
+            <form id="nuevaConfirma" method="POST">
+               @csrf
                 <table width="70%" cellpadding="5">
                     <tr>
                         <div class="form-group">
                             <th><label for="txtFecha"><strong>Fecha:</strong></label></th>
-                            <td colspan="6"><input class="form-control" type="date" id="txtFecha"></td>
+                            <td colspan="6"><input class="form-control" type="date" id="txtFecha" required></td>
                         </div>
                     </tr>
                     <tr>
                         <div class="form-group">
                             <th><label for="slcObispo"><strong>Obispo:</strong></label></th>
                             <td colspan="6">
-                                <select class="form-control" id="slcObispo">
+                                <select class="form-control" id="slcObispo" required>
                                     <option selected disabled>
                                     --Seleccionar--
                                     </option>
@@ -56,65 +55,69 @@
                                 <label for="txtLibro"><strong>Libro:</strong></label>
                             </td>
                             <td>
-                                <input class="form-control" type="number" id="txtLibro">
+                                <input class="form-control" type="number" id="txtLibro" required>
                             </td>
                             <td>
                                 <label for="txtActa"><strong>Acta:</strong></label>
                             </td>
                             <td>
-                                <input class="form-control" type="number" id="txtActa">
+                                <input class="form-control" type="number" id="txtActa" required>
                             </td>
                             <td>
                                 <label for="txtPagina"><strong>Pagina:</strong></label>
                             </td>
                             <td>
-                                <input class="form-control" type="number" id="txtPagina">
+                                <input class="form-control" type="number" id="txtPagina" required>
                             </td>
                         </div>
                     </tr>
                 </table>
+
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h3">Padrinos</h1>
                 </div>
+
+                <small style="color: red; text-align: center;">Puede agregar hasta 4 padrinos</small>
                 <table  width="70%" cellpadding="5">
                     <tr>
                         <div class="form-group">
                             <th><label for="txtNombre"><strong>Nombre:</strong></label></th>
-                            <td colspan="6"><input class="form-control" type="text" id="txtNombre"></td>
+                            <td colspan="6">
+                                <input type="text" id="txtNombre" name="txtNombre" class="form-control" onkeyup="validarCrear()">
+                                <div class="invalid-feedback">Nombre no válido</div>
+                            </td>
                         </div>
                     </tr>
                     <tr>
                         <div class="form-group">
                             <th><label for="txtApellido"><strong>Apellido:</strong></label></th>
-                            <td colspan="6"><input class="form-control" type="text" id="txtApellido"></td>
+                            <td colspan="6">
+                                <input type="text" id="txtApellido" name="txtApellido" class="form-control" onkeyup="validarCrear()"> <!-- onkeyup="validarCrear()"-->
+                                <div class="invalid-feedback">Apellido no válido</div>
+                            </td>
                         </div>
                     </tr>
                     <tr>
                         <div class="form-group">
-                            <th><label for="radioMasculino"><strong>Sexo:</strong></label></th>
+                            <th><label for="sltSexo"><strong>Sexo:</strong></label></th>
                             <td colspan="6">
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="sexo" id="radioMasculino" value="Masculino" checked>
-                                        Masculino
-                                    </label>
-                                    <label>
-                                        <input type="radio" name="sexo" id="radioFemenino" value="Femenino">
-                                        Femenino
-                                    </label>
-                                </div>
+                                <select class="form-control" id="sltSexo">
+                                    <option selected disabled>--Seleccionar--</option>
+                                    <option value="Masculino">Masculino</option>
+                                    <option value="Femenino">Femenino</option>
+                                </select>
                             </td>
                         </div>
                     </tr>
                     <tr>
                         <th></th>
                         <td colspan="6" style="float: right;">
-                            <button type="submit" id="btnAgregar" class="btn botonAdd btn-primary"><i class="fas fa-plus" ></i></button>
+                            <button type="button" id="btnAgregar" class="btn btn-primary" onclick="guardar()"><i class="fas fa-plus-circle" ></i></button>
                         </td>
                     </tr>
                 </table>
                 <br>
-                <table class="table table-hover table-bordered table-sm" cellspacing="0" width="100%" style="text-align: center;">
+                <table class="table table-hover table-bordered table-sm" cellspacing="0" width="100%" style="text-align: center;" id="padTable">
                     <thead>
                         <tr>
                             <th>Nombres</th>
@@ -124,17 +127,8 @@
                         </tr>
                     </thead>
 
-                    <tbody>
-                        <tr id="" data-target="">
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>
-                                <button class="btn btn-danger btn-xs btnEliminar" type="button" id="delete-{{ $persona->id }}">
-                                    <i class="fas fa-minus" ></i>
-                                </button>
-                            </td>
-                        </tr>
+                    <tbody id="tablita">
+                       
                     </tbody>
                 </table>
                 
@@ -142,7 +136,7 @@
                     <table>
                         <tr>
                             <td>
-                                <button type="submit" id="btnGuardar" class="btn boton btn-primary">Guardar</button>
+                                <button type="button" id="btnGuardar" class="btn boton btn-primary" onclick="ingresarConfirma()">Guardar</button>
                             </td>
                             <td>
                                 <button type="button" onclick="window.location.href = '{{ url ('detalle_persona', $persona->id) }}';" class="btn btn-block btn-danger btn-flat">Cancelar</button>
@@ -156,51 +150,237 @@
 
     <script type="text/javascript">
         
+        function desplazoArriba(){
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+        }
+
+
         function cerrarAlertas(){
             $(".alert").prop("hidden", true);
         }
 
-        /*$.ajaxSetup({
+        $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
-        });*/
+        });
+        
+        window.onload=function(){
+            var alerta = $("#alerta-success");
+            alerta.hide();
+            var alerta = $("#alerta-error");
+            alerta.hide();
+            $('.alert .close').on('click', function(e) {
+                $(this).parent().hide();
+            });
 
-        $(document).ready(function(){
-            $("#btnAgregar").click(function(e){
-                e.preventDefault();
-                $(".botonAdd").prop("disabled", true);
-                $.ajax({
-                    type: 'POST',
-                    url: '{{ url ('padrinos_confirma') }}',
-                    data: {
-                        "_token": "{{ csrf_token() }}",
-                        nombre : $("#txtNombre").val(),
-                        apellido : $("#txtApellido").val(),
-                        sexo : $("#radioMasculino").prop("checked"),
-                        tipoGuardado : $(this).attr('id'),
-                    },
-                    success : function(response){
-                        if(response.includes("Nuevo id:")){
-                            var url_confirma = "{{ url('crear_confirma') }}";
-                            url_confirma = url_confirma + "/" + response.split(":")[1];
-                            window.location = url_confirma;
-                        }
-                        else{
-                            $("#btnAgregar").prop("disabled", false);
-                            $("#msjExito").text(response);
-                            $("#alertExito").prop("hidden", false);
-                        }
-                        
-                    },
-                    error: function(response){
-                        $("#btnAgregar").prop("disabled", false);
-                        $("#msjError").text(response.responseText);
-                        $("#alertError").prop("hidden", false);
-                    },
-                });
+            //document.getElementById('btnGuardar').disabled = true;
+            document.getElementById('btnAgregar').disabled = true;
+        }
+
+        //Validaciones
+        function validarNom(nom) {
+        if(nom == ""){
+            return false;
+        }
+        else{
+            var regex = /(^[a-zA-ZñÑáéíóúÁÉÍÓÚ]+$)|(^[a-zA-ZñÑáéíóúÁÉÍÓÚ]+ ?[a-zA-ZñÑáéíóúÁÉÍÓÚ]+$)|(^[a-zA-ZñÑáéíóúÁÉÍÓÚ]+ ?[a-zA-ZñÑáéíóúÁÉÍÓÚ]+ ?[a-zA-ZñÑáéíóúÁÉÍÓÚ]+$)/;
+            return regex.test(nom);
+        }
+        }
+
+        function validaciones(_nom, _ape){
+            var estado = false;
+            estado = (validarNom(_nom) && validarNom(_ape))
+            return estado;
+        }
+
+        function validarCrear() {
+            var _nom = document.getElementById("txtNombre").value;
+            var _ape = document.getElementById("txtApellido").value;
+            if (!validarNom(_nom)){
+            document.getElementById('txtNombre').className = "form-control is-invalid";
+            }   
+            else{
+                document.getElementById('txtNombre').className = "form-control";
+            }
+            if (!validarNom(_ape)){
+                document.getElementById('txtApellido').className = "form-control is-invalid";
+            }
+            else{
+                document.getElementById('txtApellido').className = "form-control";
+            }
+            
+            var esValido = validaciones(_nom, _ape);
+            document.getElementById('btnAgregar').disabled = !esValido;
+        }
+
+        var i = 0;
+        //Agregar a Tabla
+        function guardar(){
+            
+            if(i === 4){
+                document.getElementById('btnAgregar').disabled = true;
+            }
+            else{
+                var _nom = document.getElementById("txtNombre").value;
+                var _ape = document.getElementById("txtApellido").value;
+                var _sex = document.getElementById("sltSexo").value;
+
+                i++;
+                var fila = '<tr id="row' + i + '"><td>' + _nom+ '</td><td>' + _ape + '</td><td>' + _sex + '</td><td><button type="button" name="remove" id="' + i + '" class="btn btn-danger btn-xs btn_remove"><i class="fas fa-minus" ></i></button></td></tr>'; //esto seria lo que contendria la fila
+                var btn = document.createElement("TR");
+                btn.innerHTML=fila;
+                document.getElementById("tablita").appendChild(btn);
+            }
+        }
+
+        $(function () {
+            $(document).on('click', '.btn_remove', function (event) {
+                event.preventDefault();
+                $(this).closest('tr').remove();
+                i--;
             });
         });
+
+        function foreach(root, selector, callback) {
+            if (typeof selector == 'string') {
+                var all = root.querySelectorAll(selector);
+                for (var each = 0; each < all.length; each++) {
+                    callback(all[each]);
+                }
+            } else {
+                for (var each = 0; each < selector.length; each++) {
+                    foreach(root, selector[each], callback);
+                }
+            }
+        }
+
+        function walk(padTable) {
+            var padTable = document.getElementById(padTable);
+            var data = [];
+            if (padTable) {
+                foreach(padTable, 'tr', function (row) {
+                    var record = [];
+                    foreach(row, 'td', function (cell) {
+                        if (cell.children.length > 0 && cell.children.length < 2) {
+                            record.push(cell.children[0].value);
+                        } else {
+                            record.push(cell.innerText);
+                        }
+
+                    });
+                    if (record.length > 0) {
+                        data.push(record);
+                    }
+
+                });
+            }
+            
+            return data;
+        }
+
+        /*function ingresarConfirma(){
+            var data = walk("padTable");
+            console.log(data)
+            
+            var confirma = {
+                "_token": "{{ csrf_token() }}",
+                fecha : $("#txtFecha").val(),
+                obispo : $("#slcObispo").val(),
+                libro : $("#txtLibro").val(),
+                acta : $("#txtActa").val(),
+                pagina : $("#txtPagina").val(),
+                padrinos : data
+            };
+
+            console.log(confirma)
+
+            $.ajax({
+                
+                url: '{{ url ('padrinos_confirma') }}',
+                type: "POST",
+                dataType: "JSON",
+                data: 
+                {
+                    confir: JSON.stringify(confirma)
+                },
+
+                success: function (result) {
+                    console.log();
+                },
+                error: function (err) {
+                    console.log();   
+                }
+            });
+
+        }*/
+
+        function ingresarConfirma(){
+            var data = walk("padTable");
+            console.log(data)
+            var num = i;
+            var confirma = {
+                "_token": "{{ csrf_token() }}",
+                fecha : $("#txtFecha").val(),
+                obispo : $("#slcObispo").val(),
+                libro : $("#txtLibro").val(),
+                acta : $("#txtActa").val(),
+                pagina : $("#txtPagina").val(),
+                padrinos : data
+            };
+
+            console.log(confirma)
+
+            $.ajax({
+                
+                url: '{{ url ('padrinos_confirma') }}',
+                type: "POST",
+                dataType: "JSON",
+                data: 
+                {
+                    "_token": "{{ csrf_token() }}",
+                    fecha : $("#txtFecha").val(),
+                    obispo : $("#slcObispo").val(),
+                    libro : $("#txtLibro").val(),
+                    acta : $("#txtActa").val(),
+                    pagina : $("#txtPagina").val(),
+                    cantPad: num,
+                    padrinos : JSON.stringify(data),
+                },
+
+                success: function (result) {
+                    console.log();
+                },
+                error: function (err) {
+                    console.log();   
+                }
+            });
+
+        }
+
+/*                success : function(response){
+                    if(response.includes("Nuevo id:")){
+                        var url_confirma = "{{ url('crear_confirma') }}";
+                        url_confirma = url_confirma + "/" + response.split(":")[1];
+                        window.location = url_confirma;
+                    }
+                    else{
+                        $("#btnGuardar").prop("disabled", false);
+                        $("#msjExito").text(response);
+                        $("#alertExito").prop("hidden", false);
+                    }
+                    
+                },
+                error: function(response){
+                    $("#btnGuardar").prop("disabled", false);
+                    $("#msjError").text(response.responseText);
+                    $("#alertError").prop("hidden", false);
+                },
+            });
+        });*/
     </script>
+
+    
 
 @endsection

@@ -95,44 +95,53 @@ class ConfirmaController extends Controller
     }
 
     public function addPadrino(Request $request){
-        if($request->isMethod('POST')){
-            $mensaje = 'Errores encontrados';
-            $nombreValido = False;
-            $apellidoValido = False;
-            $sexoValido = False;
-            if($request->has('nombre') && $request->nombre!="")
-                $nombreValido = True;
-            else
-                $mensaje = $mensaje . " Nombre no especificado.";
-            
-            if($request->has('apellido') && $request->apellido!="")
-                $apellidoValido = True;
-            else
-                $mensaje = $mensaje . " Apellido no especificado.";
-            
-            if($request->has('sexo'))
-                $sexoValido = True;
-            else
-                $mensaje = $mensaje . " Sexo no especificado.";
-            
-            if ($nombreValido && $apellidoValido && $sexoValido){
-                
-                $nombrePadrino = $request->nombre;
-                $apellidoPadrino = $request->apellido;
-                $sexoPadrino = $request->sexo == "true";
-                //ARRAY
-                $resultado = compact("nombrePadrino", "apellidoPadrino", "sexoPadrino");
+        print("entra al metodo");
+        if ($request::isMethod('post')) {
+            //$confirma = json_decode($request);
+           
 
-                dd($resultado->all());
+            $conf = new Confirma;
+            $conf->persona_id = $persona->id;
+            $conf->fecha = $request->fecha;
+            $conf->padre_id = $request->obispo;
+            $conf->libro = $request->libro;
+            $conf->acta = $request->acta;
+            $conf->pagina = $request->pagina;
+            $conf->save();
+            
+            $padrinos = json_decode($request->padrinos);
+            
+            for ($i=0; $i < (int)$request->cantPad; $i++) {
+                $padrino = new PadrinosConfirma;
+                $padrino->confirma_id = $conf->id;
+                $padrino->nombre = $padrinos[0];
+                $padrino->apellido = $padrinos[1];
+                $sex = $padrinos[2];
+                if ($sex == 'Masculino') {
+                    $padrino->sexo = True; 
+                }
+                else{
+                    $padrino->sexo = False;
+                }
+                //dd($padrino);
+                $padrino->save();    
+            }
+            /*try {
+                $em->flush();
+            } catch (\Exception $e) {
+                $response->setData([
+                    'status' => 'error',
+                    'message' => 'No se pudieron guardar los datos',
+                    'exception' => $e->getMessage(),
+                ]);
+                return $response;
+            }
 
-                return response($content = 'Nuevo id:'.$persona->id, $status=200)->with('resultado', $resultado);
-            }
-            else{
-                return response($content = $mensaje, $status = 500);
-            }
-        }
-        else{
-            //Redirigir a crear persona
+
+            $response->setData([
+                'status' => 'success',
+                'message' => 'Registros actualizados exitosamente',
+            ]);*/
             return redirect('detalle_persona/$persona->id');
         }
     }

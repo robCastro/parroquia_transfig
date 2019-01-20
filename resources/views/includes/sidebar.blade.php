@@ -20,13 +20,13 @@
         Padres <i id="sub_icon" class="fas fa-church fa-lg"></i>
       </a>
     </li>
-
+    @if(Session::get('type') == 'admin')
     <li class="nav-item {{ request()->is('asistentes') ? 'active' : '' }}">
       <a href="{{ url('asistentes') }}">
         Asistentes <i id="sub_icon" class="fas fa-users fa-lg"></i>
       </a>
     </li>
-
+    @endif
     <li class="nav-item {{ request()->is('') ? 'active' : '' }}">
       <a href="{{ url('') }}">
         Mi Usuario <i id="sub_icon" class="fas fa-user-cog fa-lg"></i>
