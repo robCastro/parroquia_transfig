@@ -18,12 +18,10 @@ class BautismoController extends Controller
             $persona = Persona::findOrFail((int)$id);
         }
         catch(ModelNotFoundException $e){
-            //Redireccionar a detalle de persona
             return redirect(route('lista_personas'));
         }
         $bautismo = Bautismo::where('persona_id', '=', $persona->id)->count();
         if($bautismo==1){
-            //Redireccionar a detalle de persona
             return redirect(route('detalle_persona',$persona->id));
         }
 
@@ -91,4 +89,33 @@ class BautismoController extends Controller
             return redirect(route('lista_personas'));
         }
     }
+
+    public function detalle($idPersona)
+    {
+        try{
+            $persona = Persona::findOrFail((int)$idPersona);
+        }
+        catch(ModelNotFoundException $e){
+            return redirect(route('lista_personas'));
+        }
+        $bautismo = Bautismo::where('persona_id', '=', $idPersona)->first();
+        if($bautismo==null){
+            return redirect(route('detalle_persona',$idPersona));
+        }
+
+        return view('pages.bautismo_detalle',compact("bautismo"));
+    }
+
+    public function eliminar(Request $request){
+		if ($request->isMethod('post')){
+            $idPersona=$request->txtIdPersona;
+            $bautismo = Bautismo::find($request->txtIdBautismo);
+            $bautismo->delete();
+            //Padrinos se eliminan en cascada
+            return redirect(route('detalle_persona',$idPersona));
+		}
+		else{
+			return redirect(route('lista_personas'));
+		}
+	}
 }

@@ -108,15 +108,6 @@
 				</tr>
 			</thead>
 			<tbody>
-            <!--<tr>
-                <td>Jose Arturo Hernandez Perez</td>
-				<td>Masculino</td>
-                <td>
-                <button class="btn btn-danger btn-xs">
-                    <i class="fas fa-trash-alt" ></i>
-                </button>
-                </td>		
-            </tr>-->
 			</tbody>
             </table>
         </div>

@@ -62,3 +62,5 @@ Route::post('padres_eliminar', 'PadresController@eliminar')->name('padres_elimin
 
 Route::get('bautismo_crear/{id}', 'BautismoController@crear')->where('id', '[0-9]+')->name('bautismo_crear');
 Route::post('bautismo_guardar', 'BautismoController@guardar')->name('bautismo_guardar');
+Route::get('bautismo_detalle/{id}', 'BautismoController@detalle')->where('id', '[0-9]+')->name('bautismo_detalle');
+Route::post('bautismo_eliminar', 'BautismoController@eliminar')->name('bautismo_eliminar');
