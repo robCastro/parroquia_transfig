@@ -17,15 +17,16 @@
             <h4><i class="icon fa fa-times"></i> Error</h4>
             <h5 id="mensaje_alerta2"></h5>
         </div>
-        <form method="POST" id="frmCrear" action="{{ route('bautismo_guardar') }}" class="form-horizontal">
+        <form method="POST" id="frmModificar" action="{{ route('bautismo_modificar') }}" class="form-horizontal">
         @csrf
-        <input type="text" name="txtCodigoPersona" id="txtCodigoPersona" value="{{$persona->id}}" hidden>
+        <input type="text" name="txtCodigoBautismo" id="txtCodigoBautismo" value="{{$bautismo->id}}" hidden>
         <input type="text" name="listaPadrinos" id="listaPadrinos" hidden>
+        <input type="text" name="listaPadrinosEliminar" id="listaPadrinosEliminar" hidden>
         <div class="justify-content-center">
             <div class="form-group row">
                 <label for="txtFecha" class="col-md-3 col-form-label text-md-right"><strong>Fecha:</strong></label>
                 <div class="col-sm-4">
-                    <input type="date" id="txtFecha" name="txtFecha" class="form-control" required>
+                    <input type="date" id="txtFecha" name="txtFecha" class="form-control" value="{{$bautismo->fecha}}" required>
                     <div class="invalid-feedback">Ingrese la fecha</div>
                 </div>
             </div>
@@ -47,7 +48,7 @@
             <div class="form-group row">
             <label for="txtLibro" class="col-md-4 col-form-label text-md-right"><strong>Libro:</strong></label>
                 <div class="col-sm-7">
-                    <input type="text" id="txtLibro" name="txtLibro" class="form-control" onkeyup="validar()">
+                    <input type="text" id="txtLibro" name="txtLibro" class="form-control" onkeyup="validar()" value="{{$bautismo->libro}}">
                     <div class="invalid-feedback">Campo numérico</div>
                 </div>
             </div>
@@ -56,7 +57,7 @@
             <div class="form-group row">
             <label for="txtActa" class="col-md-4 col-form-label text-md-right"><strong>Acta:</strong></label>
                 <div class="col-sm-7">
-                    <input type="text" id="txtActa" name="txtActa" class="form-control" onkeyup="validar()">
+                    <input type="text" id="txtActa" name="txtActa" class="form-control" onkeyup="validar()" value="{{$bautismo->acta}}">
                     <div class="invalid-feedback">Campo numérico</div>
                 </div>
             </div>
@@ -108,6 +109,22 @@
 				</tr>
 			</thead>
 			<tbody>
+                @foreach($bautismo->padrinos()->get() as $padrino)
+                    <tr id="tr{{ $padrino->id }}">
+                        <td>{{ $padrino->nombre }}</td>
+                        <td>{{ $padrino->apellido }}</td>
+                        <td>
+                            @if ($padrino->sexo)
+                                Masculino
+                            @else
+                                Femenino
+                            @endif
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-danger btn-xs" onclick="eliminarPadrino({{ $padrino->id }})"><i class="fas fa-trash-alt"></i></a>
+                        </td>
+                    </tr>   
+            @endforeach
 			</tbody>
             </table>
         </div>
@@ -117,7 +134,7 @@
             <button type="submit" id="btnGuardar" class="btn btn-primary" >Guardar</button>
             </div>
             <div class="col-sm-2">
-            <button onclick="window.location.href = '{{ route ('detalle_persona',$persona->id) }}';" type="button" id="btnCancelar" class="btn btn-secondary" >Cancelar</button>
+            <button onclick="window.location.href = '{{ route ('bautismo_detalle',$persona->id) }}';" type="button" id="btnCancelar" class="btn btn-secondary" >Cancelar</button>
             </div>
         </div>
         </form>
@@ -126,6 +143,8 @@
 
         <script type="text/javascript">
 
+            var ultimoIndex=document.getElementById("padrinosB_table").rows.length-1;
+            var listaPadrinosEliminar=[];
             function desplazoArriba(){
                 $("html, body").animate({ scrollTop: 0 }, "slow");
             }
@@ -134,7 +153,7 @@
             $(".alert").prop("hidden", true);
             }
             window.onload=function(){
-                document.getElementById('btnGuardar').disabled = true;
+                //document.getElementById('btnGuardar').disabled = true;
                 $("#btnAgregar").addClass('disabled');
 		    }
             function agregarPadrino(){
@@ -159,6 +178,14 @@
 
             function eliminarFila(rowIndex) {
                 document.getElementById("padrinosB_table").deleteRow(rowIndex);
+                validar();
+            }
+
+            function eliminarPadrino(idPadrino) {
+                ultimoIndex=ultimoIndex-1;
+                var indexFila = $("#tr" + idPadrino).index()+1;
+                document.getElementById("padrinosB_table").deleteRow(indexFila);
+                listaPadrinosEliminar.push(idPadrino);
                 validar();
             }
 
@@ -251,6 +278,7 @@
                 var lista=[];
                 $("#padrinosB_table tr").each(function (index) {
                 if(index != 0){
+                    if(index > ultimoIndex){
                     var tr=[];
                     $(this).children("td").each(function (index2) {
                         if(index2 != 3){
@@ -258,6 +286,7 @@
                         }
                     });
                     lista.push(tr);
+                    }
                 }
                 });
                 console.log(lista);
@@ -268,7 +297,8 @@
 			$('#btnGuardar').click(function(e){
 				e.preventDefault();
                 listarPadrinos();
-				var form = $("#frmCrear");
+                document.getElementById('listaPadrinosEliminar').value=JSON.stringify(listaPadrinosEliminar);
+				var form = $("#frmModificar");
 				$.ajax({
 					type: 'POST',
 					url: form.attr('action'),
@@ -277,7 +307,7 @@
 						$("#mensaje_alerta").html(result.mensaje);
 						$("#alerta-success").prop("hidden", false);
                         desplazoArriba();
-                        var url_detalle = "{{ route('detalle_persona',$persona->id) }}";
+                        var url_detalle = "{{ route('bautismo_detalle',$persona->id) }}";
                         window.location = url_detalle;
 					},
 					error: function(result){
@@ -288,6 +318,7 @@
 					}
 				});	
 			});
+
             });
 
         </script>

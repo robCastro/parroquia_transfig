@@ -64,3 +64,5 @@ Route::get('bautismo_crear/{id}', 'BautismoController@crear')->where('id', '[0-9
 Route::post('bautismo_guardar', 'BautismoController@guardar')->name('bautismo_guardar');
 Route::get('bautismo_detalle/{id}', 'BautismoController@detalle')->where('id', '[0-9]+')->name('bautismo_detalle');
 Route::post('bautismo_eliminar', 'BautismoController@eliminar')->name('bautismo_eliminar');
+Route::get('bautismo_editar/{id}', 'BautismoController@editar')->where('id', '[0-9]+')->name('bautismo_editar');
+Route::post('bautismo_modificar', 'BautismoController@modificar')->name('bautismo_modificar');

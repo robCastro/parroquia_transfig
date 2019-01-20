@@ -12,7 +12,7 @@
                         <button class="btn btn-primary btn-xs btnDescargar" type="button" id="down-" onclick="window.location = '#'">
                                 <i class="fas fa-download" ></i>
                         </button>
-                        <button class="btn btn-info btn-xs btnEditar" type="button" id="edit-" onclick="window.location = '#'" >
+                        <button class="btn btn-info btn-xs btnEditar" type="button" id="edit-" onclick="window.location.href = '{{ route ('bautismo_editar',$bautismo->persona->id) }}';" >
                             <i class="fas fa-edit" ></i>
                         </button>
                         <button class="btn btn-danger btn-xs" onclick="mostrarModalEliminar(this)" >
@@ -61,7 +61,7 @@
         </div>
         
         <div style="padding-left:5%; padding-right:30%;">
-        <table class="table table-bordered table-hover table-sm" cellspacing="0" width="80%" style="text-align: center; vertical-align: middle;">
+        <table class="table table-bordered table-sm" cellspacing="0" width="80%" style="text-align: center; vertical-align: middle;">
             <thead>
 				<tr>
 					<th style="width:40%">Nombre</th>
