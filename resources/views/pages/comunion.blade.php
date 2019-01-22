@@ -43,6 +43,23 @@
                 </tr>
                 <tr>
                     <div class="form-group">
+                        <td><label for="radioMasculino"><strong>Sexo:</strong></label></td>
+                        <td>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="sexo" id="radioMasculino" value="Masculino" checked>
+                                    Masculino
+                                </label>
+                                <label>
+                                    <input type="radio" name="sexo" id="radioFemenino" value="Femenino">
+                                    Femenino
+                                </label>
+                            </div>
+                        </td>
+                    </div>
+                </tr>
+                <tr>
+                    <div class="form-group">
                         <td><label for="txtFechaNac"><strong>Fecha:</strong></label></td>
                         <td><input required="" class="form-control" type="date" id="txtFecha"></td>
                     </div>
@@ -146,11 +163,12 @@
         }
         var nombre = $("#txtNombre").val();
         var apellido = $("#txtApellido").val();
+        var sexo = $("#radioMasculino").prop("checked");
         var fecha = $("#txtFecha").val();
         var padre = $("#slcPadre").val();
         nombre = nombre.replace(" " , "%20");
         apellido = apellido.replace(" " , "%20");
-        var url = "{{ url('pdf_comunion') }}" + "?nombre="+nombre+"&apellido="+apellido+"&fecha="+fecha+"&padre="+padre;
+        var url = "{{ url('pdf_comunion') }}" + "?nombre="+nombre+"&apellido="+apellido+"&sexo="+sexo+"&fecha="+fecha+"&padre="+padre;
         window.location = url;
         $("#btnGenerar").prop("disabled", false);
     });

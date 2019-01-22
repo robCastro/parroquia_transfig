@@ -17,7 +17,7 @@
 
 @section('contenido')
 	<p class="texto-general">
-		Hacemos constar que después de haber sido catequizada en la doctrina de Iniciación cristiana <b>{{ $nombre }} {{ $apellido }}</b> recibió de manos del Padre. {{ $padre->nombre }} {{ $padre->apellido }}, el sacramento de la Sagrada Comunión en esta parroquia La Transfiguración, @if($arrayFecha['dia'] != 'uno') a los {{ $arrayFecha['dia'] }} días @else el primer día @endif de {{ $arrayFecha['mes'] }} del año {{ $arrayFecha['anio'] }}.
+		Hacemos constar que después de haber sido @if($sexo) catequizado @else catequizada @endif en la doctrina de Iniciación cristiana <b>{{ $nombre }} {{ $apellido }}</b> recibió de manos del Padre. {{ $padre->nombre }} {{ $padre->apellido }}, el sacramento de la Sagrada Comunión en esta parroquia La Transfiguración, @if($arrayFecha['dia'] != 'uno') a los {{ $arrayFecha['dia'] }} días @else el primer día @endif de {{ $arrayFecha['mes'] }} del año {{ $arrayFecha['anio'] }}.
 	</p>
 
 	<p class="texto-general">

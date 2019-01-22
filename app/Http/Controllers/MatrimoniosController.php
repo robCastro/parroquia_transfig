@@ -239,6 +239,7 @@ class MatrimoniosController extends Controller
     public function pdfComunion(Request $request){
         $nombre = $request->nombre;
         $apellido = $request->apellido;
+        $sexo = $request->sexo == "true";
         $fecha = str_replace('/', '-', $request->fecha);
         $arrayFecha = $this->convertidorFecha($fecha);
         $hoy = getdate();
@@ -254,6 +255,7 @@ class MatrimoniosController extends Controller
         $pdf = PDF::loadView('pages.pdfs.acta_comuniones', compact(
             'nombre',
             'apellido',
+            'sexo',
             'fecha',
             'arrayFecha',
             'hoy',
