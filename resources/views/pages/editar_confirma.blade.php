@@ -22,25 +22,25 @@
         </div>
         
         <div style="padding-top: 2%; padding-left: 3%" id="divForm">
-            <form id="nuevaConfirma" method="GET">
+            <form id="editarConfirma" method="GET">
                @csrf
                 <table width="70%" cellpadding="5">
                     <tr>
                         <div class="form-group">
                             <th><label for="txtFecha"><strong>Fecha:</strong></label></th>
-                            <td colspan="6"><input class="form-control" type="date" id="txtFecha" required></td>
+                            <td colspan="6"><input class="form-control" type="date" id="txtFecha" value="{{ $confirma->fecha }}" required></td>
                         </div>
                     </tr>
                     <tr>
                         <div class="form-group">
                             <th><label for="slcObispo"><strong>Obispo:</strong></label></th>
                             <td colspan="6">
-                                <select class="form-control" id="slcObispo" required>
+                                <select class="form-control" id="slcObispo">
                                     <option selected disabled>
                                     --Seleccionar--
                                     </option>
-                                    @foreach ($obispos as $obispo)                            
-                                        <option value="{{ $obispo->id}}">
+                                    @foreach ($padres as $obispo)                            
+                                        <option value="{{ $obispo->id}}" @if($obispo->id == $confirma->padre->id) selected @endif>
                                             {{ $obispo->nombre }} {{ $obispo->apellido }}
                                         </option>
                                     @endforeach
@@ -55,19 +55,19 @@
                                 <label for="txtLibro"><strong>Libro:</strong></label>
                             </td>
                             <td>
-                                <input class="form-control" type="number" id="txtLibro" required>
+                                <input class="form-control" type="number" id="txtLibro" value="{{ $confirma->libro }}">
                             </td>
                             <td>
                                 <label for="txtActa"><strong>Acta:</strong></label>
                             </td>
                             <td>
-                                <input class="form-control" type="number" id="txtActa" required>
+                                <input class="form-control" type="number" id="txtActa" value="{{ $confirma->acta }}">
                             </td>
                             <td>
                                 <label for="txtPagina"><strong>Pagina:</strong></label>
                             </td>
                             <td>
-                                <input class="form-control" type="number" id="txtPagina" required>
+                                <input class="form-control" type="number" id="txtPagina" value="{{ $confirma->pagina }}">
                             </td>
                         </div>
                     </tr>
@@ -84,7 +84,6 @@
                             <th><label for="txtNombre"><strong>Nombre:</strong></label></th>
                             <td colspan="6">
                                 <input type="text" id="txtNombre" name="txtNombre" class="form-control">
-                                <div class="invalid-feedback">Nombre no válido</div>
                             </td>
                         </div>
                     </tr>
@@ -93,7 +92,6 @@
                             <th><label for="txtApellido"><strong>Apellido:</strong></label></th>
                             <td colspan="6">
                                 <input type="text" id="txtApellido" name="txtApellido" class="form-control"> <!-- onkeyup="validarCrear()"-->
-                                <div class="invalid-feedback">Apellido no válido</div>
                             </td>
                         </div>
                     </tr>
@@ -133,7 +131,16 @@
                     </thead>
 
                     <tbody id="tablita">
-                       
+                       @foreach($confirma->padrinos()->get() as $padrino)
+                        <tr>
+                            <td>{{ $padrino->nombre }}</td>
+                            <td>{{ $padrino->apellido }}</td>
+                            <td>@if($padrino->sexo) Masculino @else Femenino @endif</td>
+                            <td>
+                                <button type="button" name="remove" id="' + i + '" class="btn btn-danger btn-xs btn_remove"><i class="fas fa-minus" ></i></button>
+                            </td>
+                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
                 
@@ -141,10 +148,10 @@
                     <table>
                         <tr>
                             <td>
-                                <button type="submit" id="btnGuardar" class="btn boton btn-primary" onclick="ingresarConfirma()">Guardar</button>
+                                <button type="button" id="btnGuardar" class="btn boton btn-primary" onclick="guardarConfirma()">Guardar</button>
                             </td>
                             <td>
-                                <button type="button" onclick="window.location.href = '{{ url ('detalle_persona', $persona->id) }}';" class="btn btn-block btn-danger btn-flat">Cancelar</button>
+                                <button type="button" onclick="window.location.href = '{{ url ('detalle_confirma', $persona->id) }}';" class="btn btn-block btn-danger btn-flat">Cancelar</button>
                             </td>
                         </tr>
                     </table>
@@ -255,8 +262,9 @@
             return data;
         }
 
-        function ingresarConfirma(){
+        function guardarConfirma(){
             var data = walk("padTable");
+            console.log(data);
             if(data.length < 1){
                 desplazoArriba();
                 $("#msjError").text("Fatan padrinos, debe ser 1 como minimo.");
@@ -318,7 +326,7 @@
 
             $.ajax({
                 
-                url: '{{ url ('registrar_confirma', $persona->id) }}',
+                url: "{{ url ('guardar_confirma', $confirma->id) }}",
                 type: "GET",
                 dataType: "JSON",
                 data: 
@@ -332,9 +340,11 @@
                 
                 //response recibe id del esposo
                 //window.location = "{{ url('detalle_confirma', $persona->id) }}";
+                console.log("exito");
             },
             error: function(err){
                 $(".btn").prop("disabled", false);
+                console.log("error");
                 window.location = "{{ url('detalle_confirma', $persona->id) }}";
             },
             });
