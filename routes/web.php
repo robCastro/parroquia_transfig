@@ -54,6 +54,7 @@ Route::prefix('admin')->group(function()
 
 });
 
+
 //Patricia
 Route::get('padres', 'PadresController@index')->name('padres');
 Route::post('padres_crear', 'PadresController@crear')->name('padres_crear');
@@ -66,3 +67,8 @@ Route::get('bautismo_detalle/{id}', 'BautismoController@detalle')->where('id', '
 Route::post('bautismo_eliminar', 'BautismoController@eliminar')->name('bautismo_eliminar');
 Route::get('bautismo_editar/{id}', 'BautismoController@editar')->where('id', '[0-9]+')->name('bautismo_editar');
 Route::post('bautismo_modificar', 'BautismoController@modificar')->name('bautismo_modificar');
+
+Route::get('miusuario', 'UsuarioPropioController@index')->name('miusuario');
+Route::post('miusuario_editarNombre', 'UsuarioPropioController@cambiarNombre')->name('miusuario_editarNombre');
+Route::post('miusuario_editarUsuario', 'UsuarioPropioController@cambiarUsuario')->name('miusuario_editarUsuario');
+Route::post('miusuario_editarContrasenia', 'UsuarioPropioController@cambiarContraseña')->name('miusuario_editarContrasenia');
