@@ -10,7 +10,7 @@
     </li>
 
     <li class="nav-item {{ request()->is('') ? 'active' : '' }}">
-      <a href="#">
+      <a href="{{ url('comuniones') }}">
         Comunión <i id="sub_icon" class="fas fa-file-pdf fa-lg"></i>
       </a>
     </li>

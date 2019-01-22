@@ -8,7 +8,7 @@
                 <tr>
                     <td><h1 class="h2">Matrimonio de {{ $esposo->nombre }}  y {{ $esposa->nombre }} </h1></td>
                     <td>
-                        <button class="btn btn-primary btn-xs btnDescargar" type="button" id="down-" onclick="window.location = '#'">
+                        <button class="btn btn-primary btn-xs btnDescargar" type="button" id="down-" onclick="window.location = '{{ url('pdf_matrimonio', $idPersona) }}'">
                                 <i class="fas fa-download" ></i>
                         </button>
                         <button class="btn btn-info btn-xs btnEditar" type="button" id="edit-" onclick="window.location = '{{ url('editar_matrimonio', $idPersona) }}'" >

@@ -85,7 +85,7 @@
                         <td class="celdaClic" style="vertical-align:middle">Bautismo</td>
                         <td class="celdaClic"  style="vertical-align:middle">{{ $persona->bautismos()->first()->fecha }}</td>
                         <td style="vertical-align:middle">
-                            <button class="btn btn-primary btn-xs btnDescargar" type="button" id="edit-{{ $persona->id }}" >
+                            <button class="btn btn-primary btn-xs btnDescargar" type="button" id="edit-{{ $persona->id }}" onclick="window.location = '{{ url('pdf_bautismo', $persona->id) }}'" >
                                 <i class="fas fa-download" ></i>
                             </button>
                             <button class="btn btn-info btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" >
@@ -112,13 +112,13 @@
                         <td class="celdaClic"  style="vertical-align:middle">Confirma</td>
                         <td class="celdaClic"  style="vertical-align:middle">{{ $persona->confirmas()->first()->fecha }}</td>
                         <td style="vertical-align:middle">
-                            <button class="btn btn-primary btn-xs btnDescargar" type="button" id="edit-{{ $persona->id }}" >
+                            <button class="btn btn-primary btn-xs btnDescargar" type="button" id="edit-{{ $persona->id }}" onclick="window.location = '{{ url('pdf_confirma', $persona->id) }}'">
                                 <i class="fas fa-download" ></i>
                             </button>
-                            <button class="btn btn-info btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" >
+                            <button class="btn btn-info btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}">
                                 <i class="fas fa-edit" ></i>
                             </button>
-                            <button class="btn btn-danger btn-xs btnEliminar" type="button" id="delete-{{ $persona->id }}">
+                            <button class="btn btn-danger btn-xs btnEliminar" type="button" id="delete-{{ $persona->id }}" >
                                 <i class="fas fa-trash-alt" ></i>
                             </button>
                         </td>
@@ -139,7 +139,7 @@
                         <td class="celdaClic"  style="vertical-align:middle">Matrimonio</td>
                         <td class="celdaClic"  style="vertical-align:middle">{{ $matrimonio->fecha }}</td>
                         <td style="vertical-align:middle">
-                            <button class="btn btn-primary btn-xs btnDescargar" type="button" id="edit-{{ $persona->id }}" >
+                            <button class="btn btn-primary btn-xs btnDescargar" type="button" id="edit-{{ $persona->id }}" onclick="window.location = '{{ url('pdf_matrimonio', $persona->id) }}'">
                                 <i class="fas fa-download" ></i>
                             </button>
                             <button onclick="window.location = '{{ url('editar_matrimonio', $persona->id) }}';" class="btn btn-info btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" >

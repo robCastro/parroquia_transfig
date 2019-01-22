@@ -43,6 +43,12 @@ Route::post('eliminar_matrimonio', 'MatrimoniosController@eliminar')->name('elim
 Route::get('editar_matrimonio/{id}', 'MatrimoniosController@ver_editar')->where('id', '[0-9]+')->name('editar_matrimonio');
 Route::post('guardar_editar_matrimonio/{id}', 'MatrimoniosController@guardar_editar')->where('id', '[0-9]+')->name('guardar_editar_matrimonio');
 
+Route::get('pdf_matrimonio/{id}', 'MatrimoniosController@pdfMatrimonio')->where('id', '[0-9]+')->name('pdf_matrimonio');
+Route::get('pdf_confirma/{id}', 'MatrimoniosController@pdfConfirma')->where('id', '[0-9]+')->name('pdf_confirma');
+Route::get('pdf_bautismo/{id}', 'MatrimoniosController@pdfBautismo')->where('id', '[0-9]+')->name('pdf_bautismo');
+Route::get('comuniones', 'MatrimoniosController@comuniones')->name('comuniones');
+Route::get('pdf_comunion', 'MatrimoniosController@pdfComunion')->name('pdf_comunion');
+
 // Get Data
 Route::get('datatable/getdata', 'UsuariosController@getPosts')->name('datatable/getdata');
 
