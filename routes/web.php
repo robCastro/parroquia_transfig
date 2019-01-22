@@ -40,9 +40,9 @@ Route::post('asistente_eliminar', 'UsuariosController@eliminar')->name('asistent
 Route::get('crear_confirma/{id}', 'ConfirmaController@create')->where('id', '[0-9]+')->name('crear_confirma')->middleware('auth');
 Route::get('registrar_confirma/{id}', 'ConfirmaController@store')->where('id', '[0-9]+')->name('registrar_confirma')->middleware('auth');
 Route::get('detalle_confirma/{id}', 'ConfirmaController@detalleConfirma')->where('id', '[0-9]+')->name('detalle_confirma')->middleware('auth');
-Route::post('eliminar_confirma', 'ConfirmaController@destroy')->name('eliminar_confirma');
-Route::get('editar_confirma/{id}', 'ConfirmaController@edit')->where('id', '[0-9]+')->name('editar_confirma');
-Route::get('guardar_confirma/{id}', 'ConfirmaController@update')->where('id', '[0-9]+')->name('guardar_confirma');
+Route::post('eliminar_confirma', 'ConfirmaController@destroy')->name('eliminar_confirma')->middleware('auth');
+Route::get('editar_confirma/{id}', 'ConfirmaController@edit')->where('id', '[0-9]+')->name('editar_confirma')->middleware('auth');
+Route::get('guardar_confirma/{id}', 'ConfirmaController@update')->where('id', '[0-9]+')->name('guardar_confirma')->middleware('auth');
 
 //Patricia
 Route::get('padres', 'PadresController@index')->name('padres')->middleware('auth');
