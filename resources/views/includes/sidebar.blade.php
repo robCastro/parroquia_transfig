@@ -16,7 +16,7 @@
     </li>
 
     <li class="nav-item {{ request()->is('') ? 'active' : '' }}">
-      <a href="#">
+      <a href="{{ route('padres') }}">
         Padres <i id="sub_icon" class="fas fa-church fa-lg"></i>
       </a>
     </li>
@@ -28,7 +28,7 @@
     </li>
 
     <li class="nav-item {{ request()->is('') ? 'active' : '' }}">
-      <a href="#">
+      <a href="{{ route('miusuario') }}">
         Mi Usuario <i id="sub_icon" class="fas fa-user-cog fa-lg"></i>
       </a>
     </li>

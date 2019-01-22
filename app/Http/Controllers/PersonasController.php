@@ -43,7 +43,10 @@ class PersonasController extends Controller
         $codigosCasados = DB::table('matrimonios')->select('esposo_id as persona_id')->union($codigosCasadas)->get();
         if ($nombre != ""){
             //$personas = Persona::all()->where('sexo', true)->where('nombre', 'like', '%' . $nombre . '%');
-            $personas = DB::table('personas')->where('sexo', $request->sexo == "M")->where('nombre', 'ilike', '%' . $nombre . '%')->orWhere('apellido', 'ilike', '%' . $nombre . '%');
+            //$personas = DB::table('personas')->where('sexo', $request->sexo == "M")->where('nombre', 'ilike', '%' . $nombre . '%')->orWhere('apellido', 'ilike', '%' . $nombre . '%');
+            $personas = DB::table('personas')->where('sexo', $request->sexo == "M")->where(function ($query) use($nombre){
+                $query->where('nombre', 'ilike', '%' . $nombre . '%')->orWhere('apellido', 'ilike', '%' . $nombre . '%');
+            });
         }
         else{
             //$personas = Persona::all()->where('sexo', true);
@@ -63,7 +66,7 @@ class PersonasController extends Controller
 
         */
         $arrayPersonas = array();
-        foreach ($personas as $persona) {
+        foreach ($personas->get() as $persona) {
             array_push($arrayPersonas, array(
                 'label' => $persona->nombre . " " . $persona->apellido,
                 'value' => $persona->id,

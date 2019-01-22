@@ -81,14 +81,14 @@
 
                 <tbody>
                     @if($persona->bautismos()->first())
-                    <tr data-target="#{{ $persona->id }}" id="tr-bautismo">
+                    <tr data-target="{{ route('bautismo_detalle', $persona->id) }}" id="tr-bautismo">
                         <td class="celdaClic" style="vertical-align:middle">Bautismo</td>
                         <td class="celdaClic"  style="vertical-align:middle">{{ $persona->bautismos()->first()->fecha }}</td>
                         <td style="vertical-align:middle">
                             <button class="btn btn-primary btn-xs btnDescargar" type="button" id="edit-{{ $persona->id }}" onclick="window.location = '{{ url('pdf_bautismo', $persona->id) }}'" >
                                 <i class="fas fa-download" ></i>
                             </button>
-                            <button class="btn btn-info btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" >
+                            <button onclick="window.location = '{{ route('bautismo_editar', $persona->id) }}';"class="btn btn-info btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" >
                                 <i class="fas fa-edit" ></i>
                             </button>
                             <button class="btn btn-danger btn-xs btnEliminar" type="button" id="delete-{{ $persona->id }}">
@@ -101,7 +101,7 @@
                         <td style="vertical-align:middle">Bautismo</td>
                         <td style="vertical-align:middle">----</td>
                         <td style="vertical-align:middle">
-                            <button class="btn btn-primary btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" >
+                            <button onclick="window.location = '{{ route('bautismo_crear',$persona->id) }}'" class="btn btn-primary btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" >
                                 <i class="fas fa-plus-circle" ></i>
                             </button>
                         </td>
