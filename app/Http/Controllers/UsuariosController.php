@@ -88,7 +88,8 @@ class UsuariosController extends Controller
                 $user->password = Hash::make($request->password);
                 
                 $user->save();
-                return redirect("asistentes")->with('success','Contraseña actualizada satisfactoriamente');;
+                //return redirect("asistentes")->with('success','Contraseña actualizada satisfactoriamente');;
+                return response($content = "", $status = 200);
             }
             else{
                 return redirect("asistentes")->with('error','No se pudo cambiar la Contraseña por favor intente nuevamente');;

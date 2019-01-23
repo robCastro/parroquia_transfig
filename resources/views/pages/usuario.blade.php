@@ -270,7 +270,7 @@
                         </div>
 
                         <div class="modal-footer ">
-                            <button type="submit" id="btnModificarPass" onclick="mostrarModalPass()" class="btn btn-primary btn-lg">Cambiar Contraseña</button>
+                            <button type="button" id="btnModificarPass" onclick="mostrarModalPass()" class="btn btn-primary btn-lg">Cambiar Contraseña</button>
                         </div>
                     </div>
                 </div>
@@ -413,7 +413,7 @@
 
         function mostrarModalPass(){
             $("#editPass").modal();
-
+            $("#btnModificarPass").prop("disabled", true);
             var id = $("#idEditPass").val();
             var password = $("#passwordEdit").val();
             var confirm = $("#password-confirmEdit").val();
@@ -423,7 +423,6 @@
                 
                     url: "{{ url ('asistente_editPass') }}",
                     type: "GET",
-                    dataType: "JSON",
                     data: 
                     {   
                         "_token": "{{ csrf_token() }}",
@@ -432,11 +431,18 @@
                     },
 
                     success : function(response){
-                    
+                        $("#editPass").modal("hide");
+                        $("#msjExito").text("Contraseña cambiada");
+                        $("#alertExito").prop("hidden", false);
+                        desplazoArriba();
                         $("#btnModificarPass").prop("disabled", false);
+
                         console.log("exito");
                      },
                     error: function(err){
+                        $("#editPass").modal("hide");
+                        $("#msjError").text(err.responseText);
+                        $("#alertError").prop("hidden", false);
                         $(".btn").prop("disabled", false);
                         console.log("error");
                     },
