@@ -144,7 +144,7 @@ class ConfirmaController extends Controller
             //catch en caso que confirma sea null
             return redirect('lista_personas');
         }
-        echo json_encode($confirma);
+        //echo json_encode($confirma);
         $data=json_decode($request->data);
 
         //El objeto daecho json_encode($confirma);ta posee la misma estructura del json enviado pero ya es un objeto php 
@@ -154,7 +154,7 @@ class ConfirmaController extends Controller
         $confirma->acta = $data->acta;
         $confirma->pagina = $data->pagina;
         $confirma->save();
-        echo json_encode($confirma);
+        //echo json_encode($confirma);
 
         $confirma->padrinos()->delete();
 
@@ -170,14 +170,14 @@ class ConfirmaController extends Controller
             //Evalúa el resultado de $pad[2]=='Masculino' y los asigna al sexo
             $padrino->sexo = $pad[2] == "Masculino";
             //echo("padrino");
-            echo json_encode($padrino);
+            //echo json_encode($padrino);
             $padrino->save();   
         }
-        
+        Log::debug("Antes de Response");
         //Se retorna el id de la persona
         //return response($content = "", $status = 200);
         //return redirect()->route('detalle_confirma', [$confirma->persona_id]);
-        return redirect()->back();
+        return response($content = "", $status = 200);
 
     }
 

@@ -264,6 +264,7 @@
 
         function guardarConfirma(){
             var data = walk("padTable");
+            $("#btnGuardar").prop("disabled", true);
             console.log(data);
             if(data.length < 1){
                 desplazoArriba();
@@ -328,7 +329,6 @@
                 
                 url: "{{ url ('guardar_confirma', $confirma->id) }}",
                 type: "GET",
-                dataType: "JSON",
                 data: 
                 {
                     'data' : JSON.stringify(confirma)
@@ -340,11 +340,17 @@
                     
                     //response recibe id del esposo
                     //window.location = "{{ url('detalle_confirma', $persona->id) }}";
-                    console.log("exito");
+                    $("#msjExito").text("Guardado correctamente, redirigiendo");
+                    $("#alertExito").prop("hidden", false);
+                    desplazoArriba();
+                    window.location = "{{ url ('detalle_confirma', $confirma->persona->id) }}";
                 },
                 error: function(err){
                     $(".btn").prop("disabled", false);
-                    console.log("error");
+                    console.log(err);
+                    $("#msjError").text(err.responseText);
+                    $("#alertError").prop("hidden", false);
+                    $("#btnGuardar").prop("disabled", false);
                     //window.location = "{{ url('detalle_confirma', $persona->id) }}";
                 },
             });
