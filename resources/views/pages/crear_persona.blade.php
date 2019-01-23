@@ -185,9 +185,8 @@
     });
 
     $(".btn-primary").click(function(e){
-        e.prevendDefault();
+        e.preventDefault();
         $(".btn").prop("disabled", true);
-        alert($(this).attr('id'));
         $.ajax({
             type: 'POST',
             url: '{{ url ('guardar_persona') }}',
