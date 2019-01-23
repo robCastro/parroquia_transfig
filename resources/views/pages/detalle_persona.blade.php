@@ -91,7 +91,7 @@
                             <button onclick="window.location = '{{ route('bautismo_editar', $persona->id) }}';"class="btn btn-info btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" >
                                 <i class="fas fa-edit" ></i>
                             </button>
-                            <button class="btn btn-danger btn-xs btnEliminar" type="button" id="delete-{{ $persona->id }}">
+                            <button class="btn btn-danger btn-xs btnEliminar" type="button" id="delete-bautismo">
                                 <i class="fas fa-trash-alt" ></i>
                             </button>
                         </td>
@@ -108,17 +108,17 @@
                     </tr>
                     @endif
                     @if($persona->confirmas()->first())
-                    <tr data-target="#{{ $persona->id }}" id="tr-confirma">
+                    <tr data-target="{{ url('detalle_confirma', $persona->id) }}" id="tr-confirma">
                         <td class="celdaClic"  style="vertical-align:middle">Confirma</td>
                         <td class="celdaClic"  style="vertical-align:middle">{{ $persona->confirmas()->first()->fecha }}</td>
                         <td style="vertical-align:middle">
                             <button class="btn btn-primary btn-xs btnDescargar" type="button" id="edit-{{ $persona->id }}" onclick="window.location = '{{ url('pdf_confirma', $persona->id) }}'">
                                 <i class="fas fa-download" ></i>
                             </button>
-                            <button class="btn btn-info btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}">
+                            <button onclick="window.location = '{{ url('editar_confirma', $persona->id) }}';" class="btn btn-info btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" >
                                 <i class="fas fa-edit" ></i>
                             </button>
-                            <button class="btn btn-danger btn-xs btnEliminar" type="button" id="delete-{{ $persona->id }}" >
+                            <button class="btn btn-danger btn-xs" type="button" id="delete-confirma">
                                 <i class="fas fa-trash-alt" ></i>
                             </button>
                         </td>
@@ -128,7 +128,7 @@
                         <td style="vertical-align:middle">Confirma</td>
                         <td style="vertical-align:middle">----</td>
                         <td style="vertical-align:middle">
-                            <button class="btn btn-primary btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" >
+                            <button onclick="window.location = '{{ url('crear_confirma', $persona->id) }}'" type="button" class="btn btn-primary btn-xs btnCrear" id="create-{{ $persona->id }}" >
                                 <i class="fas fa-plus-circle" ></i>
                             </button>
                         </td>
@@ -229,6 +229,10 @@
         $(".alert").prop("hidden", true);
     }
 
+    function desplazoArriba(){
+        $("html, body").animate({ scrollTop: 0 }, "slow");
+    }
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -275,6 +279,20 @@
         $("#btnSiSacramento").addClass("btn btn-success matrimonio-Delete");
     });
 
+    $("#delete-confirma").click(function(){
+        $("#msjModalSacramento").html("¿Confirma que desea eliminar esta Confirma?");
+        $("#modalSacramentoDelete").modal("show");
+        $("#btnSiSacramento").removeClass();
+        $("#btnSiSacramento").addClass("btn btn-success confirma-Delete");
+    });
+
+    $("#delete-bautismo").click(function(){
+        $("#msjModalSacramento").html("¿Confirma que desea eliminar este bautismo?");
+        $("#modalSacramentoDelete").modal("show");
+        $("#btnSiSacramento").removeClass();
+        $("#btnSiSacramento").addClass("btn btn-success bautismo-Delete");
+    });
+
     $("#btnSiSacramento").click(function(){
         $("#btnSiSacramento").prop("disabled", true);
         if($("#btnSiSacramento").hasClass("matrimonio-Delete")){
@@ -305,15 +323,96 @@
                     $("#modalSacramentoDelete").modal('hide');
                     $("#msjExito").text("Eliminado correctamente");
                     $("#alertExito").prop("hidden", false);
-
+                    desplazoArriba();
                 },
                 error: function(response){
                     $("#modalSacramentoDelete").modal('hide');
-                    $("#msjError").text("Ocurrió un Error, favor refrescar e intentar de nuevo");
+                    $("#msjError").text("Ocurrió un Error eliminando el matrimonio, favor refrescar e intentar de nuevo");
                     $("#alertError").prop("hidden", false);
                     $(".matrimonio-Delete").prop("disabled", true);
+                    desplazoArriba();
                 }
             });
+        }else{
+            if($("#btnSiSacramento").hasClass("confirma-Delete")){
+                var idPersona = $("#idAux").html();
+                $.ajax({
+                    type: 'post',
+                    url: '{{ url ('eliminar_confirma') }}',
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        idPersona : idPersona,
+                    },
+                    success : function(response){
+                        var trConfirma = document.getElementById("tr-confirma");
+                        trConfirma.cells[1].innerHTML = "----";
+                        trConfirma.cells[2].innerHTML = "";
+                        var boton = document.createElement("BUTTON");
+                        boton.type = "button";
+                        boton.classList.add("btn");
+                        boton.classList.add("btn-primary");
+                        boton.classList.add("btn-xs");
+                        boton.classList.add("btnCrear");
+                        boton.onclick = function(){window.location = '{{ url('crear_confirma', $persona->id) }}'};
+                        var i = document.createElement("i");
+                        i.classList.add("fas");
+                        i.classList.add("fa-plus-circle");
+                        boton.appendChild(i);
+                        trConfirma.cells[2].appendChild(boton);
+                        $("#modalSacramentoDelete").modal('hide');
+                        $("#msjExito").text("Eliminado correctamente");
+                        $("#alertExito").prop("hidden", false);
+
+                    },
+                    error: function(response){
+                        $("#modalSacramentoDelete").modal('hide');
+                        $("#msjError").text("Ocurrió un Error eliminando la confirma, favor refrescar e intentar de nuevo");
+                        $("#alertError").prop("hidden", false);
+                        $(".confirma-Delete").prop("disabled", true);
+                    }
+                });
+            }
+            else if($("#btnSiSacramento").hasClass("bautismo-Delete")){
+                var idPersona = $("#idAux").html();
+                alert("persona: " + idPersona);
+                $.ajax({
+                    type: 'post',
+                    url: '{{ url ('bautismo_eliminarRob') }}',
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        idPersona : idPersona,
+                    },
+                    success : function(response){
+                        var trConfirma = document.getElementById("tr-bautismo");
+                        trConfirma.cells[1].innerHTML = "----";
+                        trConfirma.cells[2].innerHTML = "";
+                        var boton = document.createElement("BUTTON");
+                        boton.type = "button";
+                        boton.classList.add("btn");
+                        boton.classList.add("btn-primary");
+                        boton.classList.add("btn-xs");
+                        boton.classList.add("btnCrear");
+                        boton.onclick = function(){window.location = '{{ route('bautismo_crear',$persona->id) }}'};
+                        var i = document.createElement("i");
+                        i.classList.add("fas");
+                        i.classList.add("fa-plus-circle");
+                        boton.appendChild(i);
+                        trConfirma.cells[2].appendChild(boton);
+                        $("#modalSacramentoDelete").modal('hide');
+                        $("#msjExito").text("Eliminado correctamente");
+                        $("#alertExito").prop("hidden", false);
+                        desplazoArriba();
+
+                    },
+                    error: function(response){
+                        $("#modalSacramentoDelete").modal('hide');
+                        $("#msjError").text("Ocurrió un Error eliminando el bautismo, favor refrescar e intentar de nuevo");
+                        $("#alertError").prop("hidden", false);
+                        $(".bautismo-Delete").prop("disabled", true);
+                        desplazoArriba();
+                    }
+                });
+            }
         }
     });
 </script>

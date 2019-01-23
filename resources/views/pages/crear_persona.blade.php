@@ -120,10 +120,10 @@
                     <table>
                         <tr>
                             <td>
-                                <button type="submit" id="btnGuardarR" class="btn boton btn-primary">Guardado Rapido</button>
+                                <button type="button" id="btnGuardarR" class="btn boton btn-primary">Guardado Rapido</button>
                             </td>
                             <td>
-                                <button type="submit" id="btnGuardar" class="btn boton btn-primary">Guardar</button>
+                                <button type="button" id="btnGuardar" class="btn boton btn-primary">Guardar</button>
                             </td>
                             <td>
                                 <button type="button" onclick="window.location.href = '{{ url ('lista_personas') }}';" class="btn btn-block btn-default btn-flat">Cancelar</button>
@@ -184,8 +184,10 @@
         });
     });
 
-    $(".boton").click(function(){
+    $(".btn-primary").click(function(e){
+        e.prevendDefault();
         $(".btn").prop("disabled", true);
+        alert($(this).attr('id'));
         $.ajax({
             type: 'POST',
             url: '{{ url ('guardar_persona') }}',

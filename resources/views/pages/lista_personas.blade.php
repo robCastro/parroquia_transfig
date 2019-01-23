@@ -26,7 +26,7 @@
 
 
 
-        <div style="padding-top: 3%; align-content: left;">
+        <div style="padding-top: 1%; align-content: left;">
             <button type="button" onclick="window.location.href = '{{ url ('crear_persona') }}';"  class="btn btn-primary" id="btnCrearPersona">Nuevo</button>
         </div>
 

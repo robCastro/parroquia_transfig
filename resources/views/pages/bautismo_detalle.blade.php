@@ -9,7 +9,7 @@
                 <tr>
                     <td><h1 class="h3">Bautismo de {{$bautismo->persona->nombre}} {{$bautismo->persona->apellido}}</h1></td>
                     <td>
-                        <button class="btn btn-primary btn-xs btnDescargar" type="button" id="down-" onclick="window.location = '#'">
+                        <button class="btn btn-primary btn-xs btnDescargar" type="button" id="down-" onclick="window.location = '{{url('pdf_bautismo', $bautismo->persona->id)}}'">
                                 <i class="fas fa-download" ></i>
                         </button>
                         <button class="btn btn-info btn-xs btnEditar" type="button" id="edit-" onclick="window.location.href = '{{ route ('bautismo_editar',$bautismo->persona->id) }}';" >

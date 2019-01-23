@@ -199,4 +199,15 @@ class BautismoController extends Controller
             return redirect(route('lista_personas'));
         }
     }
+
+    public function eliminarBautismoRob(Request $request){
+        if($request->has("idPersona")){
+            $idPersona = $request->idPersona;
+        }
+        else{
+            return redirect('lista_personas');
+        }
+        $cantEliminados = Bautismo::where('persona_id', $idPersona)->delete();
+        return response($content = "Eliminado", $status=200);
+    }
 }

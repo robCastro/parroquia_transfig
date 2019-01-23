@@ -66,7 +66,7 @@ class PersonasController extends Controller
 
         */
         $arrayPersonas = array();
-        foreach ($personas->get() as $persona) {
+        foreach ($personas as $persona) {
             array_push($arrayPersonas, array(
                 'label' => $persona->nombre . " " . $persona->apellido,
                 'value' => $persona->id,

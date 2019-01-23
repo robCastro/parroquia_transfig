@@ -25,7 +25,6 @@
 
 
     <!-- Scripts -->
-
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
@@ -100,7 +99,21 @@
     
   <script type="text/javascript">
       $(document).ready(function() {
-          $('#datatable').dataTable();
+          $('#datatable').dataTable({
+            "language": {
+                "search":"Buscar",
+                "lengthMenu": "Mostar _MENU_ registros por página",
+                "zeroRecords": "Lo sentimos, no encontramos lo que estas buscando",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "Registros no encontrados",
+                "infoFiltered": "(Filtrado en _MAX_ registros totales)",
+                "paginate": {
+                  "previous": "Anterior",
+                  "next": "Siguiente"
+                }
+
+            }
+          });
           $("[data-toggle=tooltip]").tooltip();
       } );
 
