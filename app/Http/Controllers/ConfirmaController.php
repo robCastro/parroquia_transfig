@@ -78,7 +78,8 @@ class ConfirmaController extends Controller
         }
         
         //Se retorna el id de la persona
-        return redirect()->route('detalle_confirma', [$id]);
+        //return redirect()->route('detalle_confirma', [$id]);
+        return response($content = "".$conf->id, $status=200);
         //return redirect()->route('detalle_confirma', [$id]);
     }
 

@@ -141,7 +141,7 @@
                     <table>
                         <tr>
                             <td>
-                                <button type="submit" id="btnGuardar" class="btn boton btn-primary" onclick="ingresarConfirma()">Guardar</button>
+                                <button type="button" id="btnGuardar" class="btn boton btn-primary" onclick="ingresarConfirma()">Guardar</button>
                             </td>
                             <td>
                                 <button type="button" onclick="window.location.href = '{{ url ('detalle_persona', $persona->id) }}';" class="btn btn-block btn-danger btn-flat">Cancelar</button>
@@ -257,6 +257,7 @@
 
         function ingresarConfirma(){
             var data = walk("padTable");
+            $("#btnGuardar").prop("disabled", true);
             if(data.length < 1){
                 desplazoArriba();
                 $("#msjError").text("Fatan padrinos, debe ser 1 como minimo.");
@@ -320,7 +321,6 @@
                 
                 url: '{{ url ('registrar_confirma', $persona->id) }}',
                 type: "GET",
-                dataType: "JSON",
                 data: 
                 {
                     'data' : JSON.stringify(confirma)
@@ -329,12 +329,18 @@
                 success : function(response){
                 
                     $("#btnGuardar").prop("disabled", false);
-                    
+                    $("#msjExito").text("Guardado correcamente, redirigiendo");
+                    $("#alertExito").prop("hidden", false);
+                    desplazoArriba();
+                    window.location = "{{ url('detalle_confirma', $persona->id) }}";
                     //response recibe id del esposo
                     //window.location = "{{ url('detalle_confirma', $persona->id) }}";
                 },
                 error: function(err){
                     $(".btn").prop("disabled", false);
+                    $("#msjError").text(err.responseText);
+                    $("#alertError").prop("hidden", false);
+                    $("#btnGuardar").prop("disabled", false);
                     window.location = "{{ url('detalle_confirma', $persona->id) }}";
                 },
             });
