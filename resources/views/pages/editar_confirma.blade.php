@@ -334,19 +334,19 @@
                     'data' : JSON.stringify(confirma)
                 },
 
-                ssuccess : function(response){
+                success : function(response){
                 
-                $("#btnGuardar").prop("disabled", false);
-                
-                //response recibe id del esposo
-                //window.location = "{{ url('detalle_confirma', $persona->id) }}";
-                console.log("exito");
-            },
-            error: function(err){
-                $(".btn").prop("disabled", false);
-                console.log("error");
-                window.location = "{{ url('detalle_confirma', $persona->id) }}";
-            },
+                    $("#btnGuardar").prop("disabled", false);
+                    
+                    //response recibe id del esposo
+                    //window.location = "{{ url('detalle_confirma', $persona->id) }}";
+                    console.log("exito");
+                },
+                error: function(err){
+                    $(".btn").prop("disabled", false);
+                    console.log("error");
+                    //window.location = "{{ url('detalle_confirma', $persona->id) }}";
+                },
             });
 
         }

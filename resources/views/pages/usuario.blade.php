@@ -15,11 +15,25 @@
             <button type="button" class="close" data-dismiss="alert">x</button>
         </div>
         @endif
+
+        <!-- Alerta error -->
+        <div class="alert alert-danger alert-dismissible" hidden="" id="alertError">
+            <button type="button" onclick="cerrarAlertas()" class="close" aria-hidden="true">&times;</button>
+            <h4><i class="icon fa fa-ban"></i> Error!</h4>
+            <strong id="msjError"></strong>
+        </div>
+        <!-- Alerta exito -->
+        <div class="alert alert-success alert-dismissible" hidden="" id="alertExito">
+            <button  onclick="cerrarAlertas()" type="button" class="close" aria-hidden="true">&times;</button>
+            <h4><i class="icon fa fa-check"></i> Exito!</h4>
+            <strong id="msjExito"></strong>
+        </div>
+
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Asistentes</h1>
         </div>
         <div style="padding-bottom: 1rem; align-content: left;">
-            <button class="btn btn-primary btn-xs" data-title="Create" data-toggle="modal" data-target="#create">Nuevo</button>
+            <button class="btn btn-primary btn-xs" data-title="Create" data-toggle="modal" data-backdrop="static" data-target="#create">Nuevo</button>
         </div>
 
         <div class="table-responsive">
@@ -56,7 +70,7 @@
                         <td>{{$user->username}}</td>
                         <td>{{$user->email}}</td>
                         <td>
-                            <button class="btn btn-secondary btn-xs" onclick="mostrarModalPass(this)" id="btn{{ $user->id }}">
+                            <button class="btn btn-secondary btn-xs" id="btn{{ $user->id }}" data-toggle="modal" data-target="#editPass">
                                 <i class="fas fa-key"></i>
                             </button>
                         </td>
@@ -109,7 +123,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="username" class="col-md-4 col-form-label text-md-right">Usuario</label>
+                            <label for="username" class="col-md-4 col-form-label text-md-right">Usuario:</label>
 
                             <div class="col-md-6">
                                 <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" required>
@@ -123,7 +137,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-right">Email:</label>
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
@@ -137,7 +151,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                            <label for="password" class="col-md-4 col-form-label text-md-right">Contraseña:</label>
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
@@ -151,7 +165,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
+                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">Confirmar Contraseña:</label>
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
@@ -161,7 +175,7 @@
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary btn-lg">
-                                    {{ __('Register') }}
+                                    Guardar
                                 </button>
                             </div>
                         </div>
@@ -222,7 +236,7 @@
 
     <!-- modal-dialog EDITAR PASS--> 
     <div class="modal fade" id="editPass" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-        <form method="POST" id="frmEditPass" action="{{ route('asistente_editPass') }}" class="form-horizontal">
+        <form method="GET" id="frmEditPass" class="form-horizontal">
             @csrf
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -230,27 +244,33 @@
                         <h4 class="modal-title custom_align" id="Heading">Editar Contraseña</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     </div>
+                    
                     <div class="modal-body">
                         <div class="form-group row">
-                            <label for="passwordEdit" class="col-md-4 col-form-label text-md-right">Contraseña</label>
+                            <label for="passwordEdit" class="col-md-4 col-form-label text-md-right">Contraseña:</label>
 
                             <div class="col-md-6">
-                                <input type="text" name="idEditPass" id="idEditPass" hidden>
-                                <input id="passwordEdit" type="password" class="form-control" name="passwordEdit" onkeyup="validarEditar()">
-                                <div class="invalid-feedback">Nombre no válido</div>
+                                <input type="text" name="idEditPass" id="idEditPass" value="{{$user->id}}" hidden>
+                                <input id="passwordEdit" type="password" class="form-control{{ $errors->has('passwordEdit') ? ' is-invalid' : '' }}" name="passwordEdit" required>
+
+                                @if ($errors->has('passwordEdit'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('passwordEdit') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="password-confirmEdit" class="col-md-4 col-form-label text-md-right">Confirmar Contraseña</label>
+                            <label for="password-confirmEdit" class="col-md-4 col-form-label text-md-right">Confirmar Contraseña:</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirmEdit" type="password" class="form-control" name="password_confirmation" required>
+                                <input id="password-confirmEdit" type="password" class="form-control" name="password_confirmationEdit" required>
                             </div>
                         </div>
 
                         <div class="modal-footer ">
-                            <button type="submit" id="btnModificarPass" class="btn btn-primary btn-lg">Cambiar Contraseña</button>
+                            <button type="submit" id="btnModificarPass" onclick="mostrarModalPass()" class="btn btn-primary btn-lg">Cambiar Contraseña</button>
                         </div>
                     </div>
                 </div>
@@ -285,9 +305,21 @@
     </div>
 
     <script type="text/javascript">
+
         function desplazoArriba(){
             $("html, body").animate({ scrollTop: 0 }, "slow");
         }
+
+
+        function cerrarAlertas(){
+            $(".alert").prop("hidden", true);
+        }
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
         //Validaciones
         function validarNom(nom) {
@@ -379,11 +411,45 @@
             document.getElementById('nameDelete').innerHTML = datosFila.split('|')[1]
         }
 
-        function mostrarModalPass(button){
+        function mostrarModalPass(){
             $("#editPass").modal();
-            var datosFila = $(button).closest('tr').data('id')
-            document.getElementById('idEditPass').value = datosFila.split('|')[0];
-            document.getElementById('passwordEdit').value = datosFila.split('|')[1];
+
+            var id = $("#idEditPass").val();
+            var password = $("#passwordEdit").val();
+            var confirm = $("#password-confirmEdit").val();
+            //console.log(id, password)
+            if (password == confirm) {
+                $.ajax({
+                
+                    url: "{{ url ('asistente_editPass') }}",
+                    type: "GET",
+                    dataType: "JSON",
+                    data: 
+                    {   
+                        "_token": "{{ csrf_token() }}",
+                        'id' : id,
+                        'password': password,
+                    },
+
+                    success : function(response){
+                    
+                        $("#btnModificarPass").prop("disabled", false);
+                        console.log("exito");
+                     },
+                    error: function(err){
+                        $(".btn").prop("disabled", false);
+                        console.log("error");
+                    },
+                });
+            }else{
+                desplazoArriba();
+                $("#msjError").text("contraseñas no coinciden");
+                $("#alertError").prop("hidden", false);
+                $("#btnModificarPass").prop("disabled", false);
+                return;                
+            }
+
+
         }
 
     </script>

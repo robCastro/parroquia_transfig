@@ -47,7 +47,7 @@ Route::get('pdf_comunion', 'MatrimoniosController@pdfComunion')->name('pdf_comun
 Route::get('asistentes', 'UsuariosController@index')->name('asistentes')->middleware('auth', 'is_admin');
 Route::post('asistente_crear', 'UsuariosController@create')->name('asistente_crear')->middleware('auth', 'is_admin');
 Route::post('asistente_editar', 'UsuariosController@editar')->name('asistente_editar')->middleware('auth', 'is_admin');
-Route::post('asistente_editPass', 'UsuariosController@edit')->name('asistente_editPass')->middleware('auth', 'is_admin');
+Route::get('asistente_editPass', 'UsuariosController@edit')->name('asistente_editPass')->middleware('auth', 'is_admin');
 Route::post('asistente_eliminar', 'UsuariosController@eliminar')->name('asistente_eliminar')->middleware('auth', 'is_admin');
 
 Route::get('crear_confirma/{id}', 'ConfirmaController@create')->where('id', '[0-9]+')->name('crear_confirma')->middleware('auth');
@@ -57,8 +57,6 @@ Route::post('eliminar_confirma', 'ConfirmaController@destroy')->name('eliminar_c
 Route::get('editar_confirma/{id}', 'ConfirmaController@edit')->where('id', '[0-9]+')->name('editar_confirma')->middleware('auth');
 Route::get('guardar_confirma/{id}', 'ConfirmaController@update')->where('id', '[0-9]+')->name('guardar_confirma')->middleware('auth');
 
-// Get Data
-Route::get('datatable/getdata', 'UsuariosController@getPosts')->name('datatable/getdata');
 
 //Patricia
 Route::get('padres', 'PadresController@index')->name('padres')->middleware('auth');

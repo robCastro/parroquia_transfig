@@ -326,17 +326,17 @@
                     'data' : JSON.stringify(confirma)
                 },
 
-                ssuccess : function(response){
+                success : function(response){
                 
-                $("#btnGuardar").prop("disabled", false);
-                
-                //response recibe id del esposo
-                //window.location = "{{ url('detalle_confirma', $persona->id) }}";
-            },
-            error: function(err){
-                $(".btn").prop("disabled", false);
-                window.location = "{{ url('detalle_confirma', $persona->id) }}";
-            },
+                    $("#btnGuardar").prop("disabled", false);
+                    
+                    //response recibe id del esposo
+                    //window.location = "{{ url('detalle_confirma', $persona->id) }}";
+                },
+                error: function(err){
+                    $(".btn").prop("disabled", false);
+                    window.location = "{{ url('detalle_confirma', $persona->id) }}";
+                },
             });
 
         }

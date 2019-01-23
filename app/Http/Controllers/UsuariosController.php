@@ -81,25 +81,14 @@ class UsuariosController extends Controller
     }
 
     public function edit(Request $request){
-        try{
-            $rules=([
-                'passwordEdit' => ['required', 'string', 'min:6', 'confirmed'],
-            ]);
-            $this->validate($request,$rules);
-            }
-        catch (ValidationException $e) { 
-            return response($content = 'Datos erroneos, reintentar.', $status = 500); 
-        }
+        if ($request->isMethod('get')){
+            if($request->has('password') && $request->password != ""){
 
-        if ($request->isMethod('post')){
-            if($request->has('passwordEdit') && $request->passwordEdit != ""){
-                $mensaje="Cambios realizados.";
-
-                $user = User::find($request->idEditPass);
-                $user->password = Hash::make($request->passwordEdit);
+                $user = User::find($request->id);
+                $user->password = Hash::make($request->password);
                 
                 $user->save();
-                return redirect("admin/asistentes")->with('success','Contraseña actualizada satisfactoriamente');;
+                return redirect("asistentes")->with('success','Contraseña actualizada satisfactoriamente');;
             }
             else{
                 return redirect("asistentes")->with('error','No se pudo cambiar la Contraseña por favor intente nuevamente');;
@@ -107,7 +96,7 @@ class UsuariosController extends Controller
         }
         else{
             //redireccionar
-            return redirect('admin/asistentes');
+            return redirect('asistentes');
         }
     }
 
