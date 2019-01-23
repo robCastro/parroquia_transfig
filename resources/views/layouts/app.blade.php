@@ -17,7 +17,7 @@
 
     <!-- Custom styles for this template -->
     <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="" crossorigin="anonymous">
     <link  href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/bootstrapadd.min.css') }}">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
@@ -25,13 +25,22 @@
 
 
     <!-- Scripts -->
-<<<<<<< HEAD
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
+    <!-- jQuery UI -->
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style>
+      .ui-autocomplete-loading {
+        background: white url("{{ asset('img/ui-anim_basic_16x16.gif') }}") right center no-repeat;
+      }
+    </style>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 
     <style>
       .bd-placeholder-img {
@@ -90,7 +99,21 @@
     
   <script type="text/javascript">
       $(document).ready(function() {
-          $('#datatable').dataTable();
+          $('#datatable').dataTable({
+            "language": {
+                "search":"Buscar",
+                "lengthMenu": "Mostar _MENU_ registros por página",
+                "zeroRecords": "Lo sentimos, no encontramos lo que estas buscando",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "Registros no encontrados",
+                "infoFiltered": "(Filtrado en _MAX_ registros totales)",
+                "paginate": {
+                  "previous": "Anterior",
+                  "next": "Siguiente"
+                }
+
+            }
+          });
           $("[data-toggle=tooltip]").tooltip();
       } );
 

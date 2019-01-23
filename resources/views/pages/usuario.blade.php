@@ -90,7 +90,7 @@
                 </div>
                 <div class="modal-body">
 
-                    <form method="POST" action="{{ url('admin/asistente_crear') }}">
+                    <form method="POST" action="{{ url('asistente_crear') }}">
                         
                         @csrf
 

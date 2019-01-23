@@ -81,17 +81,17 @@
 
                 <tbody>
                     @if($persona->bautismos()->first())
-                    <tr data-target="#{{ $persona->id }}">
+                    <tr data-target="{{ route('bautismo_detalle', $persona->id) }}" id="tr-bautismo">
                         <td class="celdaClic" style="vertical-align:middle">Bautismo</td>
                         <td class="celdaClic"  style="vertical-align:middle">{{ $persona->bautismos()->first()->fecha }}</td>
                         <td style="vertical-align:middle">
-                            <button class="btn btn-primary btn-xs btnDescargar" type="button" id="edit-{{ $persona->id }}" >
+                            <button class="btn btn-primary btn-xs btnDescargar" type="button" id="edit-{{ $persona->id }}" onclick="window.location = '{{ url('pdf_bautismo', $persona->id) }}'" >
                                 <i class="fas fa-download" ></i>
                             </button>
-                            <button class="btn btn-info btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" >
+                            <button onclick="window.location = '{{ route('bautismo_editar', $persona->id) }}';"class="btn btn-info btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" >
                                 <i class="fas fa-edit" ></i>
                             </button>
-                            <button class="btn btn-danger btn-xs btnEliminar" type="button" id="delete-{{ $persona->id }}">
+                            <button class="btn btn-danger btn-xs btnEliminar" type="button" id="delete-bautismo">
                                 <i class="fas fa-trash-alt" ></i>
                             </button>
                         </td>
@@ -101,24 +101,24 @@
                         <td style="vertical-align:middle">Bautismo</td>
                         <td style="vertical-align:middle">----</td>
                         <td style="vertical-align:middle">
-                            <button class="btn btn-primary btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" >
+                            <button onclick="window.location = '{{ route('bautismo_crear',$persona->id) }}'" class="btn btn-primary btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" >
                                 <i class="fas fa-plus-circle" ></i>
                             </button>
                         </td>
                     </tr>
                     @endif
                     @if($persona->confirmas()->first())
-                    <tr data-target="#{{ $persona->id }}">
+                    <tr data-target="{{ url('detalle_confirma', $persona->id) }}" id="tr-confirma">
                         <td class="celdaClic"  style="vertical-align:middle">Confirma</td>
                         <td class="celdaClic"  style="vertical-align:middle">{{ $persona->confirmas()->first()->fecha }}</td>
                         <td style="vertical-align:middle">
-                            <button class="btn btn-primary btn-xs btnDescargar" type="button" id="edit-{{ $persona->id }}" >
+                            <button class="btn btn-primary btn-xs btnDescargar" type="button" id="edit-{{ $persona->id }}" onclick="window.location = '{{ url('pdf_confirma', $persona->id) }}'">
                                 <i class="fas fa-download" ></i>
                             </button>
-                            <button class="btn btn-info btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" >
+                            <button onclick="window.location = '{{ url('editar_confirma', $persona->id) }}';" class="btn btn-info btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" >
                                 <i class="fas fa-edit" ></i>
                             </button>
-                            <button class="btn btn-danger btn-xs btnEliminar" type="button" id="delete-{{ $persona->id }}">
+                            <button class="btn btn-danger btn-xs" type="button" id="delete-confirma">
                                 <i class="fas fa-trash-alt" ></i>
                             </button>
                         </td>
@@ -128,24 +128,24 @@
                         <td style="vertical-align:middle">Confirma</td>
                         <td style="vertical-align:middle">----</td>
                         <td style="vertical-align:middle">
-                            <button class="btn btn-primary btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" >
+                            <button onclick="window.location = '{{ url('crear_confirma', $persona->id) }}'" type="button" class="btn btn-primary btn-xs btnCrear" id="create-{{ $persona->id }}" >
                                 <i class="fas fa-plus-circle" ></i>
                             </button>
                         </td>
                     </tr>
                     @endif
                     @if($matrimonio)
-                    <tr data-target="#{{ $persona->id }}">
+                    <tr data-target="{{ url('detalle_matrimonio', $persona->id) }}" id="tr-matrimonio">
                         <td class="celdaClic"  style="vertical-align:middle">Matrimonio</td>
                         <td class="celdaClic"  style="vertical-align:middle">{{ $matrimonio->fecha }}</td>
                         <td style="vertical-align:middle">
-                            <button class="btn btn-primary btn-xs btnDescargar" type="button" id="edit-{{ $persona->id }}" >
+                            <button class="btn btn-primary btn-xs btnDescargar" type="button" id="edit-{{ $persona->id }}" onclick="window.location = '{{ url('pdf_matrimonio', $persona->id) }}'">
                                 <i class="fas fa-download" ></i>
                             </button>
-                            <button class="btn btn-info btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" >
+                            <button onclick="window.location = '{{ url('editar_matrimonio', $persona->id) }}';" class="btn btn-info btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" >
                                 <i class="fas fa-edit" ></i>
                             </button>
-                            <button class="btn btn-danger btn-xs btnEliminar" type="button" id="delete-{{ $persona->id }}">
+                            <button class="btn btn-danger btn-xs" type="button" id="delete-matrimonio">
                                 <i class="fas fa-trash-alt" ></i>
                             </button>
                         </td>
@@ -155,7 +155,7 @@
                         <td style="vertical-align:middle">Matrimonio</td>
                         <td style="vertical-align:middle">----</td>
                         <td style="vertical-align:middle">
-                            <button class="btn btn-primary btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" >
+                            <button onclick="window.location = '{{ url('nuevo_matrimonio') }}'" class="btn btn-primary btn-xs btnEditar" type="button" id="edit-{{ $persona->id }}" >
                                 <i class="fas fa-plus-circle" ></i>
                             </button>
                         </td>
@@ -196,11 +196,41 @@
         <!-- /.modal-dialog --> 
     </div>
 
+    <!-- modal delete Sacramento-->
+    <div class="modal fade" id="modalSacramentoDelete" tabindex="-1" role="dialog" aria-labelledby="delete" aria-hidden="true">
+        <form method="post">
+        @csrf
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title custom_align" id="Heading">Eliminar</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger">
+                        <span class="glyphicon glyphicon-warning-sign"></span> <strong id="msjModalSacramento"></strong>
+                    </div>
+                </div>
+                <div class="modal-footer ">
+                    <button type="button" class="btn btn-success" id="btnSiSacramento" ><span class="glyphicon glyphicon-ok-sign"></span>Si</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> No</button>
+                </div>
+            </div>
+            <!-- /.modal-content --> 
+        </div>
+        </form>
+        <!-- /.modal-dialog --> 
+    </div>
 
 <script>
     
     function cerrarAlertas(){
         $(".alert").prop("hidden", true);
+    }
+
+    function desplazoArriba(){
+        $("html, body").animate({ scrollTop: 0 }, "slow");
     }
 
     $.ajaxSetup({
@@ -240,6 +270,150 @@
                 $("#alertError").prop("hidden", false);
             }
         });
+    });
+
+    $("#delete-matrimonio").click(function(){
+        $("#msjModalSacramento").html("¿Confirma que desea eliminar este Matrimonio?");
+        $("#modalSacramentoDelete").modal("show");
+        $("#btnSiSacramento").removeClass();
+        $("#btnSiSacramento").addClass("btn btn-success matrimonio-Delete");
+    });
+
+    $("#delete-confirma").click(function(){
+        $("#msjModalSacramento").html("¿Confirma que desea eliminar esta Confirma?");
+        $("#modalSacramentoDelete").modal("show");
+        $("#btnSiSacramento").removeClass();
+        $("#btnSiSacramento").addClass("btn btn-success confirma-Delete");
+    });
+
+    $("#delete-bautismo").click(function(){
+        $("#msjModalSacramento").html("¿Confirma que desea eliminar este bautismo?");
+        $("#modalSacramentoDelete").modal("show");
+        $("#btnSiSacramento").removeClass();
+        $("#btnSiSacramento").addClass("btn btn-success bautismo-Delete");
+    });
+
+    $("#btnSiSacramento").click(function(){
+        $("#btnSiSacramento").prop("disabled", true);
+        if($("#btnSiSacramento").hasClass("matrimonio-Delete")){
+            var idPersona = $("#idAux").html();
+            $.ajax({
+                type: 'post',
+                url: '{{ url ('eliminar_matrimonio') }}',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    idPersona : idPersona,
+                },
+                success : function(response){
+                    var trMatrimonio = document.getElementById("tr-matrimonio");
+                    trMatrimonio.cells[1].innerHTML = "----";
+                    trMatrimonio.cells[2].innerHTML = "";
+                    var boton = document.createElement("BUTTON");
+                    boton.type = "button";
+                    boton.classList.add("btn");
+                    boton.classList.add("btn-primary");
+                    boton.classList.add("btn-xs");
+                    boton.classList.add("btnEditar");
+                    boton.onclick = function(){window.location = '{{ url('nuevo_matrimonio') }}'};
+                    var i = document.createElement("i");
+                    i.classList.add("fas");
+                    i.classList.add("fa-plus-circle");
+                    boton.appendChild(i);
+                    trMatrimonio.cells[2].appendChild(boton);
+                    $("#modalSacramentoDelete").modal('hide');
+                    $("#msjExito").text("Eliminado correctamente");
+                    $("#alertExito").prop("hidden", false);
+                    desplazoArriba();
+                },
+                error: function(response){
+                    $("#modalSacramentoDelete").modal('hide');
+                    $("#msjError").text("Ocurrió un Error eliminando el matrimonio, favor refrescar e intentar de nuevo");
+                    $("#alertError").prop("hidden", false);
+                    $(".matrimonio-Delete").prop("disabled", true);
+                    desplazoArriba();
+                }
+            });
+        }else{
+            if($("#btnSiSacramento").hasClass("confirma-Delete")){
+                var idPersona = $("#idAux").html();
+                $.ajax({
+                    type: 'post',
+                    url: '{{ url ('eliminar_confirma') }}',
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        idPersona : idPersona,
+                    },
+                    success : function(response){
+                        var trConfirma = document.getElementById("tr-confirma");
+                        trConfirma.cells[1].innerHTML = "----";
+                        trConfirma.cells[2].innerHTML = "";
+                        var boton = document.createElement("BUTTON");
+                        boton.type = "button";
+                        boton.classList.add("btn");
+                        boton.classList.add("btn-primary");
+                        boton.classList.add("btn-xs");
+                        boton.classList.add("btnCrear");
+                        boton.onclick = function(){window.location = '{{ url('crear_confirma', $persona->id) }}'};
+                        var i = document.createElement("i");
+                        i.classList.add("fas");
+                        i.classList.add("fa-plus-circle");
+                        boton.appendChild(i);
+                        trConfirma.cells[2].appendChild(boton);
+                        $("#modalSacramentoDelete").modal('hide');
+                        $("#msjExito").text("Eliminado correctamente");
+                        $("#alertExito").prop("hidden", false);
+
+                    },
+                    error: function(response){
+                        $("#modalSacramentoDelete").modal('hide');
+                        $("#msjError").text("Ocurrió un Error eliminando la confirma, favor refrescar e intentar de nuevo");
+                        $("#alertError").prop("hidden", false);
+                        $(".confirma-Delete").prop("disabled", true);
+                    }
+                });
+            }
+            else if($("#btnSiSacramento").hasClass("bautismo-Delete")){
+                var idPersona = $("#idAux").html();
+                alert("persona: " + idPersona);
+                $.ajax({
+                    type: 'post',
+                    url: '{{ url ('bautismo_eliminarRob') }}',
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        idPersona : idPersona,
+                    },
+                    success : function(response){
+                        var trConfirma = document.getElementById("tr-bautismo");
+                        trConfirma.cells[1].innerHTML = "----";
+                        trConfirma.cells[2].innerHTML = "";
+                        var boton = document.createElement("BUTTON");
+                        boton.type = "button";
+                        boton.classList.add("btn");
+                        boton.classList.add("btn-primary");
+                        boton.classList.add("btn-xs");
+                        boton.classList.add("btnCrear");
+                        boton.onclick = function(){window.location = '{{ route('bautismo_crear',$persona->id) }}'};
+                        var i = document.createElement("i");
+                        i.classList.add("fas");
+                        i.classList.add("fa-plus-circle");
+                        boton.appendChild(i);
+                        trConfirma.cells[2].appendChild(boton);
+                        $("#modalSacramentoDelete").modal('hide');
+                        $("#msjExito").text("Eliminado correctamente");
+                        $("#alertExito").prop("hidden", false);
+                        desplazoArriba();
+
+                    },
+                    error: function(response){
+                        $("#modalSacramentoDelete").modal('hide');
+                        $("#msjError").text("Ocurrió un Error eliminando el bautismo, favor refrescar e intentar de nuevo");
+                        $("#alertError").prop("hidden", false);
+                        $(".bautismo-Delete").prop("disabled", true);
+                        desplazoArriba();
+                    }
+                });
+            }
+        }
     });
 </script>
 @endsection

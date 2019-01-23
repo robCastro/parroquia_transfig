@@ -47,14 +47,24 @@ class PadresController extends Controller
                 else{
                     $padre->padreActual = false;
                 }
-                $padre->save();
+				$padreAnterior=Padre::where('padreActual', '=', true)->first();
+				$padre->save();
+				if ($padreAnterior->id != $padre->id && $padre->padreActual){
+					$padreAnterior->padreActual=false;
+				}
+				$padreAnterior->save();
 				return response()->json([
 					'codigo' => $padre->id,
                     'nombre' => $padre->nombre,
                     'apellido'=> $padre->apellido,
                     'tipo' => $padre->esObispo,
                     'actual' => $padre->padreActual,
-					'mensaje' => 'Padre Guardado.'
+					'mensaje' => 'Padre Guardado.',
+					'codigoAnterior' => $padreAnterior->id,
+                    'nombreAnterior' => $padreAnterior->nombre,
+                    'apellidoAnterior'=> $padreAnterior->apellido,
+                    'tipoAnterior' => $padreAnterior->esObispo,
+                    'actualAnterior' => $padreAnterior->padreActual
 				]);
 			}
 			else{
@@ -63,7 +73,7 @@ class PadresController extends Controller
 		}
 		else{
 			//Redirigir
-			return redirect('padres');
+			return redirect(route('padres'));
 		}
 	}
 
@@ -107,15 +117,25 @@ class PadresController extends Controller
 							$padre->padreActual = false;
 						}
 				}
-				
-                $padre->save();
+
+				$padreAnterior=Padre::where('padreActual', '=', true)->first();
+				$padre->save();
+				if ($padreAnterior->id != $padre->id && $padre->padreActual){
+					$padreAnterior->padreActual=false;
+				}
+				$padreAnterior->save();
 				return response()->json([
 					'codigo' => $padre->id,
                     'nombre' => $padre->nombre,
                     'apellido'=> $padre->apellido,
                     'tipo' => $padre->esObispo,
                     'actual' => $padre->padreActual,
-					'mensaje' => $mensaje
+					'mensaje' => $mensaje,
+					'codigoAnterior' => $padreAnterior->id,
+                    'nombreAnterior' => $padreAnterior->nombre,
+                    'apellidoAnterior'=> $padreAnterior->apellido,
+                    'tipoAnterior' => $padreAnterior->esObispo,
+                    'actualAnterior' => $padreAnterior->padreActual
 				]);
 			}
 			else{
@@ -124,7 +144,7 @@ class PadresController extends Controller
 		}
 		else{
 			//redireccionar
-			return redirect('padres');
+			return redirect(route('padres'));
 		}
     }
     
@@ -154,7 +174,7 @@ class PadresController extends Controller
 		}
 		else{
 			//redireccionar
-			return redirect('padres');
+			return redirect(route('padres'));
 		}
 	}
 }

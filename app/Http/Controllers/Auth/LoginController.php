@@ -27,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = 'admin/asistentes';
+    protected $redirectTo = 'lista_personas';
 
     /**
      * Create a new controller instance.
@@ -76,7 +76,7 @@ class LoginController extends Controller
         return redirect()->back()
             ->withInput()
             ->withErrors([
-                'login' => 'These credentials do not match our records.',
+                'login' => 'Estas credenciales no coinciden con nuestros registros.',
             ]);
     }
 }

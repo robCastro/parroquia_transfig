@@ -43,7 +43,7 @@ class UsuariosController extends Controller
             'estado' => 'act',
         ]);
 
-        return redirect("admin/asistentes")->with('success','Registro creado satisfactoriamente');;
+        return redirect("asistentes")->with('success','Registro creado satisfactoriamente');;
     }
 
     public function editar(Request $request){
@@ -68,7 +68,7 @@ class UsuariosController extends Controller
                 $user->email = $request->emailEdit;
                 
                 $user->save();
-                return redirect("admin/asistentes")->with('success','Registro actualizado satisfactoriamente');;
+                return redirect("asistentes")->with('success','Registro actualizado satisfactoriamente');;
             }
             else{
                 return response($content = 'Faltan datos.', $status = 500);
@@ -76,7 +76,7 @@ class UsuariosController extends Controller
         }
         else{
             //redireccionar
-            return redirect('admin/asistentes');
+            return redirect('asistentes');
         }
     }
 
@@ -102,7 +102,7 @@ class UsuariosController extends Controller
                 return redirect("admin/asistentes")->with('success','Contraseña actualizada satisfactoriamente');;
             }
             else{
-                return redirect("admin/asistentes")->with('error','No se pudo cambiar la Contraseña por favor intente nuevamente');;
+                return redirect("asistentes")->with('error','No se pudo cambiar la Contraseña por favor intente nuevamente');;
             }
         }
         else{
@@ -116,12 +116,12 @@ class UsuariosController extends Controller
             $user = User::find($request->idDelete);
             $id=$request->idDelete;
             $user->delete();
-            return redirect("admin/asistentes")->with('success','Registro eliminado satisfactoriamente');;
+            return redirect("asistentes")->with('success','Registro eliminado satisfactoriamente');;
 
         }
         else{
             //redireccionar
-            return redirect("admin/asistentes");
+            return redirect("asistentes");
         }
     }
 

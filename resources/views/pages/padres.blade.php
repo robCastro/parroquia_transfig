@@ -7,18 +7,18 @@
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Padres</h1>
         </div>
-        <div class="alert alert-success" id="alerta-success">
-	        <button type="button" class="close" aria-hidden="true">&times;</button>
+        <div class="alert alert-success" id="alerta-success" hidden="">
+	        <button onclick="cerrarAlertas()" type="button" class="close" aria-hidden="true">&times;</button>
 	        <h4><i class="icon fa fa-check"></i> Exito</h4>
 	        <h5 id="mensaje_alerta"></h5>
         </div>
-        <div class="alert alert-warning" id="alerta-error">
-            <button type="button" class="close" aria-hidden="true">&times;</button>
+        <div class="alert alert-warning" id="alerta-error" hidden="">
+            <button onclick="cerrarAlertas()" type="button" class="close" aria-hidden="true">&times;</button>
             <h4><i class="icon fa fa-times"></i> Error</h4>
             <h5 id="mensaje_alerta2"></h5>
         </div>
         <div style="padding-bottom: 1rem; align-content: left;">
-        <button class="btn btn-primary" data-title="Nuevo" data-toggle="modal" data-target="#create" >
+        <button class="btn btn-primary" data-title="Nuevo" onclick="mostrarModalNuevo(this)"  >
             Nuevo
             </button>
         </div>
@@ -190,7 +190,7 @@
                                 
                             </div>
                             <div class="modal-body">
-                                <div class="alert alert-danger">
+                                <div class="alert alert-danger" id=alerta-danger>
                                     <span class="glyphicon glyphicon-warning-sign"></span> Esta seguro de querer eliminar el Padre <strong><label id="txtEliminarNombre"></label></strong>?
                                 </div>
                                 <input type="text" name="txtEliminarCodigo" id="txtEliminarCodigo" hidden>
@@ -213,16 +213,16 @@
     	}
 
         window.onload=function(){
-            var alerta = $("#alerta-success");
-			alerta.hide();
-            var alerta = $("#alerta-error");
-			alerta.hide();
-			$('.alert .close').on('click', function(e) {
+			/*$('.alert .close').on('click', function(e) {
     			$(this).parent().hide();
-			});
+			});*/
 
             document.getElementById('btnGuardar').disabled = true;
 		}
+        
+        function cerrarAlertas(){
+            $(".alert").prop("hidden", true);
+        }
 
         //Validaciones
         function validarNom(nom) {
@@ -287,22 +287,32 @@
             document.getElementById('txtEditarCodigo').value = datosFila.split('|')[0];
             document.getElementById('txtEditarNombre').value = datosFila.split('|')[1];
             document.getElementById('txtEditarApellido').value = datosFila.split('|')[2];
-            if (datosFila.split('|')[3] == true ){
+            if (datosFila.split('|')[3]){
                 document.getElementById('obispo').checked=true;
             }
             else{
                 document.getElementById('padre').checked = true;
             }
-            if (datosFila.split('|')[4] == true ){
+            if (datosFila.split('|')[4]){
                 document.getElementById('padreActual').checked=true;
+                //document.getElementById('padreActual').disabled=true;
+            }
+            else{
+                document.getElementById('padreActual').checked=false;
+                //document.getElementById('padreActual').disabled=false;
             }
 		}
 
         function mostrarModalEliminar(button){
 			$("#delete").modal();
+            $("#alerta-danger").prop("hidden", false);
             var datosFila = $(button).closest('tr').data('id')
             document.getElementById('txtEliminarCodigo').value = datosFila.split('|')[0];
             document.getElementById('txtEliminarNombre').innerHTML = datosFila.split('|')[1] + ' ' + datosFila.split('|')[2];
+		}
+
+        function mostrarModalNuevo(button){
+			$("#create").modal();
 		}
 
 		$(document).ready(function(){
@@ -314,9 +324,8 @@
 					url: form.attr('action'),
 					data: form.serialize(),
 					success: function(result){
-						var alerta = $("#alerta-success");
 						$("#mensaje_alerta").html(result.mensaje);
-						alerta.show();
+						$("#alerta-success").prop("hidden", false);
                         $("#create").modal("toggle");
 
                         if (result.tipo){
@@ -335,6 +344,24 @@
                             }
 						
                         var tabla = $("#datatable").DataTable();
+                        if (result.codigo != result.codigoAnterior && result.actual){
+                            celda = tabla.cell(tabla.row('#tr' + result.codigoAnterior), 2);
+                            if (result.actualAnterior){
+                                celda.data('Sí');
+                            }
+                            else{
+                                celda.data('-');
+                            }
+                            celda = tabla.cell(tabla.row('#tr' + result.codigoAnterior), 4);
+                            if (result.actualAnterior){
+                                celda.data('');
+                            }
+                            else{
+                                celda.data('<button class="btn btn-danger btn-xs" onclick="mostrarModalEliminar(this)" ><i class="fas fa-trash-alt" ></i></button>');
+                            }
+                            var dataid = result.codigoAnterior + '|' + result.nombreAnterior + '|' + result.apellidoAnterior + '|' + result.tipoAnterior + '|' + result.actualAnterior;
+                            $("#tr" + result.codigoAnterior).data("id",dataid);
+                        }
 						var nodo=tabla.row.add([
 							result.nombre + ' '+ result.apellido,
 							tipo,
@@ -348,22 +375,18 @@
                         var dataid = result.codigo + '|' + result.nombre + '|' + result.apellido + '|' + result.tipo + '|' + result.actual;
                         
                         $(nodo).data("id", dataid);
-                        
                         tabla.draw(false);
-
                         desplazoArriba();
 					},
 					error: function(result){
-						var alerta = $("#alerta-error");
 						$("#mensaje_alerta2").html(result.responseText);
-						alerta.show();
+						$("#alerta-error").prop("hidden", false);
                         $("#create").modal("toggle");
                         desplazoArriba();
 						console.log(result.responseText);
 					}
 				});	
 			});
-
 
 			$('#btnModificar').click(function(e){
 				e.preventDefault();
@@ -373,9 +396,8 @@
 					url: form.attr('action'),
 					data: form.serialize(),
 					success: function(result){
-						var alerta = $("#alerta-success");
 						$("#mensaje_alerta").html(result.mensaje);
-						alerta.show();
+                        $("#alerta-success").prop("hidden", false);
 						$("#edit").modal("toggle");
 
 						var tabla = $("#datatable").DataTable();
@@ -404,13 +426,32 @@
                         }
                         var dataid = result.codigo + '|' + result.nombre + '|' + result.apellido + '|' + result.tipo + '|' + result.actual;
                         $("#tr" + result.codigo).data("id",dataid);
+
+                        if (result.codigo != result.codigoAnterior && result.actual){
+                            celda = tabla.cell(tabla.row('#tr' + result.codigoAnterior), 2);
+                            if (result.actualAnterior){
+                                celda.data('Sí');
+                            }
+                            else{
+                                celda.data('-');
+                            }
+                            celda = tabla.cell(tabla.row('#tr' + result.codigoAnterior), 4);
+                            if (result.actualAnterior){
+                                celda.data('');
+                            }
+                            else{
+                                celda.data('<button class="btn btn-danger btn-xs" onclick="mostrarModalEliminar(this)" ><i class="fas fa-trash-alt" ></i></button>');
+                            }
+                            var dataidAnterior = result.codigoAnterior + '|' + result.nombreAnterior + '|' + result.apellidoAnterior + '|' + result.tipoAnterior + '|' + result.actualAnterior;
+                            $("#tr" + result.codigoAnterior).data("id",dataidAnterior);
+                        }
+
 						desplazoArriba();
 						tabla.draw();
 					},
 					error: function(result){
-						var alerta = $("#alerta-error");
 						$("#mensaje_alerta2").html(result.responseText);
-						alerta.show();
+						$("#alerta-error").prop("hidden", false);
                         $("#edit").modal("toggle");
 						desplazoArriba();
 						console.log(result.responseText);
@@ -426,9 +467,8 @@
 					url: form.attr('action'),
 					data: form.serialize(),
 					success: function(result){
-						var alerta = $("#alerta-success");
 						$("#mensaje_alerta").html(result.mensaje);
-						alerta.show();
+						$("#alerta-success").prop("hidden", false);
                         $("#delete").modal("toggle");
                         var tabla = $("#datatable").DataTable();
                         var fila=tabla.row('#tr' + result.codigo);
@@ -437,9 +477,8 @@
                         desplazoArriba();
 					},
 					error: function(result){
-						var alerta = $("#alerta-error");
 						$("#mensaje_alerta2").html(result.responseText);
-						alerta.show();
+						$("#alerta-error").prop("hidden", false);
                         $("#delete").modal("toggle");
                         desplazoArriba();
 						console.log(result.responseText);

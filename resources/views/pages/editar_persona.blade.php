@@ -129,7 +129,7 @@
                     <table>
                         <tr>
                             <td>
-                                <button type="submit" id="btnGuardar" class="btn boton btn-primary">Guardar</button>
+                                <button type="button" id="btnGuardar" class="btn boton btn-primary">Guardar</button>
                             </td>
                             <td>
                                 <button type="button" onclick="window.location.href = '{{ url ('detalle_persona', $persona->id) }}';" class="btn btn-block btn-default btn-flat">
@@ -190,7 +190,8 @@
         });
     });
 
-    $(".boton").click(function(){
+    $(".boton").click(function(e){
+        e.preventDefault();
         $(".btn").prop("disabled", true);
         $.ajax({
             type: 'POST',
