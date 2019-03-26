@@ -15,9 +15,9 @@ class CreatePadrinoBautismosTable extends Migration
     {
         Schema::create('padrino_bautismos', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre');
-            $table->string('apellido');
-            $table->boolean('sexo');
+            $table->string('nombre')->nullable();;
+            $table->string('apellido')->nullable();;
+            $table->boolean('sexo')->nullable();;
 
             //fks
             $table->unsignedInteger('bautismo_id');

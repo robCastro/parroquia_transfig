@@ -246,10 +246,11 @@
                     </div>
                     
                     <div class="modal-body">
-                        <div class="form-group row">
+                        <div class="form-group row"><
                             <label for="passwordEdit" class="col-md-4 col-form-label text-md-right">Contraseña:</label>
 
                             <div class="col-md-6">
+                                <!-- Debe haber al menos un usuario asistente existente todo el tiempo -->
                                 <input type="text" name="idEditPass" id="idEditPass" value="{{$user->id}}" hidden>
                                 <input id="passwordEdit" type="password" class="form-control{{ $errors->has('passwordEdit') ? ' is-invalid' : '' }}" name="passwordEdit" required>
 
@@ -412,7 +413,7 @@
         }
 
         function mostrarModalPass(){
-            $("#editPass").modal();
+            //$("#editPass").modal();
             $("#btnModificarPass").prop("disabled", true);
             var id = $("#idEditPass").val();
             var password = $("#passwordEdit").val();
@@ -431,16 +432,16 @@
                     },
 
                     success : function(response){
-                        $("#editPass").modal("hide");
+                        $("#editPass").modal("toggle");
                         $("#msjExito").text("Contraseña cambiada");
                         $("#alertExito").prop("hidden", false);
                         desplazoArriba();
                         $("#btnModificarPass").prop("disabled", false);
-
+                        $(".btn").prop("disabled", false);
                         console.log("exito");
                      },
                     error: function(err){
-                        $("#editPass").modal("hide");
+                        $("#editPass").modal("toggle");
                         $("#msjError").text(err.responseText);
                         $("#alertError").prop("hidden", false);
                         $(".btn").prop("disabled", false);
@@ -448,6 +449,7 @@
                     },
                 });
             }else{
+                $("#editPass").modal('hide');
                 desplazoArriba();
                 $("#msjError").text("contraseñas no coinciden");
                 $("#alertError").prop("hidden", false);

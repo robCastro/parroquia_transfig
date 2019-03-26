@@ -15,12 +15,12 @@ class CreatePersonasTable extends Migration
     {
         Schema::create('personas', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre');
-            $table->string('apellido');
-            $table->date('fechanac');
-            $table->boolean('sexo');
-            $table->string('papa');
-            $table->string('mama');
+            $table->string('nombre')->nullable();
+            $table->string('apellido')->nullable();
+            $table->date('fechanac')->nullable();
+            $table->boolean('sexo')->nullable();
+            $table->string('papa')->nullable();
+            $table->string('mama')->nullable();
 
             //Fks
             $table->unsignedInteger('id_nacionalidad');

@@ -5,7 +5,7 @@
 @section('style-pie')
 	.pie{
 		width: 100%;
-		padding-top: 4cm;
+		padding-top: 2cm;
 	}
 @endsection
 

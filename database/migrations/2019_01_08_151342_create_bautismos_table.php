@@ -15,9 +15,9 @@ class CreateBautismosTable extends Migration
     {
         Schema::create('bautismos', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('fecha');
-            $table->integer('libro');
-            $table->integer('acta');
+            $table->date('fecha')->nullable();;
+            $table->integer('libro')->nullable();;
+            $table->integer('acta')->nullable();;
 
             //fks
             $table->unsignedInteger('persona_id');
